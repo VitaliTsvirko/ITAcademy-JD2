@@ -3,7 +3,9 @@ package by.it_academy.jd2.core.dto;
 import java.io.Serializable;
 
 /**
- * Created by Vitali Tsvirko
+ *  Данный класс хранит данные пользователя
+ *
+ *  @author Vitali Tsvirko
  */
 public class Person implements Serializable {
     private String firstname;

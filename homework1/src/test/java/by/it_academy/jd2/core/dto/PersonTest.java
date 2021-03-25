@@ -1,7 +1,5 @@
 package by.it_academy.jd2.core.dto;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

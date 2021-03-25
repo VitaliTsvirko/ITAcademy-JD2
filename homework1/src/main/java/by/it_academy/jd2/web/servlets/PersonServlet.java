@@ -9,11 +9,19 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный сервлет предназначен для обработки GET запроса содержащего данные о пользователе
+ * <p>Данные сохраняться в объект {@code Person} и выводятся в виде HTML</p>
+ * <p>Имена параметров GET запроса заданы в файле web.xml </p>
  *
+ * <p>Если параметры не были переданы в GET запросе они будут прочитаны из хранилища.</p>
+ * <p>Хранилище задается в HTTP заголовке (параметр HEADER_CONFIG_NAME).</p>
+ *
+ *  @author Vitali Tsvirko
+ *
+ * @see DataStorage
+ * @see Person
  */
 @WebServlet(urlPatterns = "/person")
 public class PersonServlet extends HttpServlet {
@@ -21,8 +29,6 @@ public class PersonServlet extends HttpServlet {
     private static final String LASTNAME_CONFIG_NAME = "LastnameParamName";
     private static final String AGE_CONFIG_NAME = "AgeParamName";
     private static final String HEADER_CONFIG_NAME = "HeaderDataStorageParamName";
-
-    private final int COOKIE_MAX_AGE = Math.toIntExact(TimeUnit.HOURS.toSeconds(1));
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

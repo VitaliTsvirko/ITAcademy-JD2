@@ -11,7 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный класс обрабатывает параметры GET запроса и данные cookie
+ *
+ * @author Vitali Tsvirko
  */
 public class CookieParamEngine implements IParamEngine {
 
@@ -19,11 +21,12 @@ public class CookieParamEngine implements IParamEngine {
      * Данный метод обрабатывает параметры переданные в запросе.
      * Если в get запросе передан {@code paramName}, то возвращается значение переданное в запросе и данные записываются в cookie
      * Если в get запросе нет искомого параметра {@code paramName}, то выполняется поиск данных в cookie.
-     * Если параметра {@code paramName} там нет то возвращается {@code null}
+     * Если параметра {@code paramName} там нет то возвращается {@code IllegalArgumentException}
      * @param paramName имя параметра
      * @param req данные запроса
      * @param resp данные ответа
-     * @return значение параметра {@code paramName} или {@code null} если данных нет
+     * @return значение параметра {@code paramName}.
+     *         Если данных нет вернет {@code IllegalArgumentException}
      */
     @Override
     public String getParamValue(String paramName, HttpServletRequest req, HttpServletResponse resp) {
