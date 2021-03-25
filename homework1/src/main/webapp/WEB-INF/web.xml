@@ -1,0 +1,29 @@
+<web-app version="5.0" xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         metadata-complete="false">
+
+    <display-name>HomeWork1</display-name>
+
+    <welcome-file-list>
+        <welcome-file>/person</welcome-file>
+    </welcome-file-list>
+
+   <context-param>
+        <param-name>FirstnameParamName</param-name>
+        <param-value>firstname</param-value>
+    </context-param>
+    <context-param>
+        <param-name>LastnameParamName</param-name>
+        <param-value>lastname</param-value>
+    </context-param>
+    <context-param>
+        <param-name>HeaderDataStorageParamName</param-name>
+        <param-value>DataStorage</param-value>
+    </context-param>
+    <context-param>
+        <param-name>AgeParamName</param-name>
+        <param-value>age</param-value>
+    </context-param>
+</web-app>
