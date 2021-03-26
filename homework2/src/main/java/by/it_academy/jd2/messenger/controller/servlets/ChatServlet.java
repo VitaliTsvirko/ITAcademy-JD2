@@ -14,7 +14,18 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
+ * Данный класс предназначен работы с сообщениями чата
+ * <p>Данные сообщения передаются при помощи POST, параметры: </p>
+ * <p>message - текст сообщения</p>
+ *
+ * <p>Данные о пользователя берутся из HTTP сессии</p>
+ * <p>После получения сообщения и данных пользователя информация передается в {@code messageContainer}</p>
+ * <p>Затем происходит переадресация на страницу чата, а данные хранилища сообщений передаются в атрибутах запроса</p>
+ *
  * @author Vitali Tsvirko
+ *
+ * @see Message
+ * @see IMessages
  */
 public class ChatServlet extends HttpServlet {
     @Override

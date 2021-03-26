@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Данный класс предназначен для обработки прямых запросов на страницы JSP.
+ * <p>При прямом обращении к определенной JSP странице (указывается в Web.xml) происходит
+ * редирект на страницу ошибки 404</p>
  *  @author Vitali Tsvirko
  */
 public class JspFilter implements Filter {

@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
+ * Данный класс предназначен для обработки аутентификации пользователя мессенджера.
+ * <p>Данне о авторизации пользователя хранятся в HTTP сессии в параметре {@code user}</p>
+ * <p>Если данных в сессии нет или срок хранения истек происходит редирект на страницу авторизации</p>
+ *
  *  @author Vitali Tsvirko
  */
 public class AuthenticationFilter implements Filter{

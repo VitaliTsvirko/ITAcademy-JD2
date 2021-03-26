@@ -14,7 +14,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
+ * Данный класс предназначен для инициализации переменных приложения.
+ * <p>Переменные сохраняются в servletContext</p>
+ * <p>usersContainer - хранилище пользователей</p>
+ * <p>messageContainer - хранилище сообщений</p>
+ *
  * @author Vitali Tsvirko
+ *
+ * @see IMessages
+ * @see IUsers
+ * @see Message
+ * @see User
  */
 public class AppContextInitializer implements ServletContextListener {
     @Override

@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Данный класс предназначен вывода информации о текущем пользователе
+ *
  * @author Vitali Tsvirko
  */
 @WebServlet(urlPatterns = "/userinfo")

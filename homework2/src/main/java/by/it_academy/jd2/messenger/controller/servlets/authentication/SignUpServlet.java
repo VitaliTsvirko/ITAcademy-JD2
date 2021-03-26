@@ -14,7 +14,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
+ * Данный класс предназначен обработки регистрации пользователя мессенджера
+ * <p>Данные пользователя передаются при помощи POST, параметры: </p>
+ * <p>name - имя пользователя</p>
+ * <p>password - пароль</p>
+ * <p>firstname - Имя</p>
+ * <p>lastname - Фамилия</p>
+ * <p>dateOfBirth - Дата рождения</p>
+ *
+ * <p>Если полученные данные пусты или пользователя с таким именем уже существует, то
+ * выводиться сообщение о неверных данных,
+ * в противном случае происходит редирект на страницу авторизации</p>
+ *
  * @author Vitali Tsvirko
+ *
+ * @see User
+ * @see IUsers
  */
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {

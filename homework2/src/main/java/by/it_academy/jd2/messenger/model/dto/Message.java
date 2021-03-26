@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * Данный класс предназначен для хранения сообщения чата
+ *
  * @author Vitali Tsvirko
  */
 public class Message implements Serializable {

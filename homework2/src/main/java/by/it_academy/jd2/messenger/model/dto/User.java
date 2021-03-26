@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
+ * Данный класс предназначен для хранения данных пользователя мессенджера
+ *
  * @author Vitali Tsvirko
  */
 public class User implements Serializable {

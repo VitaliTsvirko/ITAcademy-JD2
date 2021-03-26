@@ -13,7 +13,19 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Данный класс предназначен обработки авторизации пользователя мессенджера
+ * <p>Данные пользователя передаются при помощи POST, параметры: </p>
+ * <p>name - имя пользователя</p>
+ * <p>password - пароль</p>
+ *
+ * <p>Если данные авторизации верные то происходит редирект на страницу чата,
+ * и имя пользователя сохраняется в HTTP сесии,
+ * в противном случае выводиться сообщение о неверных данных</p>
+ *
  * @author Vitali Tsvirko
+ *
+ * @see User
+ * @see IUsers
  */
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
