@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 /**
  * @author Vitali Tsvirko
  */
-
 public class ChatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

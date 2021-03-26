@@ -17,7 +17,9 @@
     <main class="container">
 
         <div class="starter-template text-center py-5 px-3">
-            <h2 class="text-danger">Произошла ошибка. Проверьте URL или повторите запрос позже.</h2>
+            <p style="font-size: 32px">Упс!!!!</p>
+            <p style="font-size: 20px">Ошибка 404 - Запрашиваемая страница не найдена</p>
+            <p class="login-callout mt-3"> Перейти <a href="<%=request.getContextPath() + "/chat"%>">на главную страницу</a> </p>
         </div>
 
     </main>
