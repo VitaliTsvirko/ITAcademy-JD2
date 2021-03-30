@@ -19,6 +19,6 @@ public class JspFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/error");
+        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/error.jsp");
     }
 }

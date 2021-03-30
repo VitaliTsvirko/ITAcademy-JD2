@@ -10,12 +10,17 @@ import java.util.Objects;
  * @author Vitali Tsvirko
  */
 public class User implements Serializable {
-    private final String name;
+    private String name;
     private String password;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
+    private String stringDateOfBirth;
 
+
+    public User (){
+
+    }
 
     public User(String name, String password, String firstName, String lastName, LocalDate dateOfBirth) {
         this.name = name;
@@ -27,6 +32,10 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -61,6 +70,13 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getStringDateOfBirth() {
+        return stringDateOfBirth;
+    }
+
+    public void setStringDateOfBirth(String stringDateOfBirth) {
+        this.stringDateOfBirth = stringDateOfBirth;
+    }
     @Override
     public String toString() {
         return "User{" +

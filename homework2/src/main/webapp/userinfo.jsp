@@ -1,8 +1,4 @@
-<%@ page import="by.it_academy.jd2.messenger.model.dto.User" %>
 <!DOCTYPE html>
-<%
-    User user = (User) request.getAttribute("user");
-%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 

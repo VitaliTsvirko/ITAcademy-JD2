@@ -2,6 +2,7 @@ package by.it_academy.jd2.messenger.controller.servlets.authentication;
 
 import by.it_academy.jd2.messenger.model.storage.api.IUsers;
 import by.it_academy.jd2.messenger.model.dto.User;
+import by.it_academy.jd2.messenger.service.api.IUserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,30 +34,25 @@ import java.time.format.DateTimeParseException;
  */
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final String DATE_INPUT_ERROR_MESSAGE = "Ошибка ввода даты. Проверьте данные и повторите ввод.";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        IUsers usersContainer = (IUsers) getServletContext().getAttribute("usersContainer");
+        IUserService usersService = (IUserService) getServletContext().getAttribute("userService");
+
+        User user = new User();
+        user.setName(req.getParameter("name"));
+        user.setPassword(req.getParameter("password"));
+        user.setFirstName(req.getParameter("firstname"));
+        user.setLastName(req.getParameter("lastname"));
+        user.setStringDateOfBirth(req.getParameter("dateOfBirth"));
 
         try{
-            usersContainer.add(new User(req.getParameter("name"),
-                                        req.getParameter("password"),
-                                        req.getParameter("firstname"),
-                                        req.getParameter("lastname"),
-                                        LocalDate.parse(req.getParameter("dateOfBirth"), dateTimeFormatter)));
+            usersService.signUp(user);
+            resp.sendRedirect("login.jsp");
         } catch (IllegalArgumentException e) {
             req.setAttribute("signup-result", e.getMessage());
             req.getRequestDispatcher("signup.jsp").forward(req, resp);
-            return;
-        } catch (DateTimeParseException e){
-            req.setAttribute("signup-result", DATE_INPUT_ERROR_MESSAGE);
-            req.getRequestDispatcher("signup.jsp").forward(req, resp);
-            return;
         }
-
-        resp.sendRedirect("login.jsp");
     }
 
 }

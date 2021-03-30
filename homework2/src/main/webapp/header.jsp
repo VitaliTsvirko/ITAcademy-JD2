@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="by.it_academy.jd2.messenger.model.dto.User" %>
 
 <%
-    String username = (String) request.getSession().getAttribute("user");
+    User user = (User) request.getSession().getAttribute("user");
 %>
 
 <link href="static/bootstrap-5.0.0/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +21,7 @@
 
         <ul class="navbar-nav" style="margin-right: 30px;">
           <%
-            if (username == null)  {
+            if (user == null)  {
           %>
               <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath() + "/login.jsp"%>">Войти</a>
@@ -32,10 +33,10 @@
           } else {
           %>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><%= username %></a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false"><%= user.getName() %></a>
                 <ul class="dropdown-menu" aria-labelledby="dropdown01" >
                   <li><a class="dropdown-item" href="<%=request.getContextPath() + "/logout"%>">Выйти</a></li>
-                  <li><a class="dropdown-item" href="<%=request.getContextPath() + "/userinfo"%>">Профиль</a></li>
+                  <li><a class="dropdown-item" href="<%=request.getContextPath() + "/userinfo.jsp"%>">Профиль</a></li>
                 </ul>
               </li>
           <%

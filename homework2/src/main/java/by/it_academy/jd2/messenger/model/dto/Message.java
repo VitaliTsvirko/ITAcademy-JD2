@@ -13,6 +13,10 @@ public class Message implements Serializable {
     private String message;
     private LocalDateTime messageTimeStamp;
 
+    public Message(){
+
+    }
+
     public Message(String user, String message, LocalDateTime messageTimeStamp) {
         this.user = user;
         this.message = message;

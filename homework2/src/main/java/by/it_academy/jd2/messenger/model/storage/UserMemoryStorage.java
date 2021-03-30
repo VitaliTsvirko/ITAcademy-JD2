@@ -44,10 +44,6 @@ public class UserMemoryStorage implements IUsers {
      */
     @Override
     public void add(User user) {
-        if (this.data.get(user.getName()) == null){
-            this.data.put(user.getName(), user);
-        } else {
-            throw new IllegalArgumentException("Пользователь " + user.getName() + " уже зарегистрирован!");
-        }
+        this.data.put(user.getName(), user);
     }
 }

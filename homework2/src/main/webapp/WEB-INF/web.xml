@@ -12,7 +12,7 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location>/error</location>
+        <location>/error.jsp</location>
     </error-page>
 
     <servlet>
@@ -32,11 +32,6 @@
     <filter-mapping>
         <filter-name>JspFilter</filter-name>
         <url-pattern>/chat.jsp</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>JspFilter</filter-name>
-        <url-pattern>/userinfo.jsp</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 

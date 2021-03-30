@@ -1,6 +1,7 @@
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="by.it_academy.jd2.messenger.model.dto.Message" %>
 <%@ page import="by.it_academy.jd2.messenger.model.storage.api.IMessages" %>
+<%@ page import="by.it_academy.jd2.messenger.model.dto.Message" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -26,8 +27,8 @@
 
                     <div class="msg-windows">
                         <%
-                            IMessages messages = (IMessages) request.getAttribute("messages");
-                            for (Message message : messages.getAll()) {
+                            List<Message> messages = (List<Message>) request.getAttribute("messages");
+                            for (Message message : messages) {
                         %>
                         <p class="msg-p">
                             <span class="msg-time"> <%= message.getMessageTimeStamp().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss")) %> </span>

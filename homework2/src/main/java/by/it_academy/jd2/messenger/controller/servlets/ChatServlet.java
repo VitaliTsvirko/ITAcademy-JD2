@@ -4,6 +4,9 @@ import by.it_academy.jd2.messenger.model.storage.api.IMessages;
 import by.it_academy.jd2.messenger.model.storage.api.IUsers;
 import by.it_academy.jd2.messenger.model.dto.Message;
 import by.it_academy.jd2.messenger.model.dto.User;
+import by.it_academy.jd2.messenger.service.MessageService;
+import by.it_academy.jd2.messenger.service.api.IMessageService;
+import by.it_academy.jd2.messenger.service.api.IUserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,27 +31,33 @@ import java.time.LocalDateTime;
  * @see IMessages
  */
 public class ChatServlet extends HttpServlet {
+    private final IMessageService messageService;
+
+    public ChatServlet(){
+        //this.messageService = (IMessageService) getServletContext().getAttribute("messageService");
+        this.messageService = MessageService.getInstance();
+
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        IMessages messageContainer = (IMessages) getServletContext().getAttribute("messageContainer");
-
-        req.setAttribute("messages", messageContainer);
+        req.setAttribute("messages", this.messageService.getAll());
         req.getRequestDispatcher("chat.jsp").forward(req, resp);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        IUsers usersContainer = (IUsers) getServletContext().getAttribute("usersContainer");
-        IMessages messageContainer = (IMessages) getServletContext().getAttribute("messageContainer");
+        User user = (User) req.getSession().getAttribute("user");
 
-        User user = usersContainer.getByName(req.getSession().getAttribute("user").toString());
+        //check user exist
 
-        String message = req.getParameter("message");
+        Message message = new Message();
+        message.setUser(user.getName());
+        message.setMessage(req.getParameter("message"));
 
-        messageContainer.add(new Message(user.getName(), message, LocalDateTime.now()));
+        messageService.add(message);
 
-        req.setAttribute("messages", messageContainer);
+        req.setAttribute("messages", messageService.getAll());
         req.getRequestDispatcher("chat.jsp").forward(req, resp);
     }
 }
