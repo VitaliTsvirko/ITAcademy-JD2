@@ -18,15 +18,9 @@
         <div class="auth-form px-3">
             <div class="auth-form-header p-0">
                 <h1>Для использования мессенджера <br> авторизуйтесь</h1>
-
-                <%
-                    if (request.getAttribute("login-result") != null){
-                        out.println("<p class=\"text-danger\">");
-                        out.println(request.getAttribute("login-result"));
-                        out.println("</p>");
-                    }
-                %>
-
+                <c:if test="${requestScope.loginResult != null}">
+                    <p class="text-danger">${requestScope.loginResult}</p>
+                </c:if>
             </div>
 
             <div class="auth-form-body mt-3">
@@ -42,7 +36,7 @@
                 </form>
             </div>
 
-            <p class="login-callout mt-3"> Нет аккаунта, <a href="<%=request.getContextPath() + "/signup.jsp"%>">зарегистрируйтесь</a> </p>
+            <p class="login-callout mt-3"> Нет аккаунта, <a href="${pageContext.request.contextPath}/signup.jsp">зарегистрируйтесь</a> </p>
         </div>
     </main>
 

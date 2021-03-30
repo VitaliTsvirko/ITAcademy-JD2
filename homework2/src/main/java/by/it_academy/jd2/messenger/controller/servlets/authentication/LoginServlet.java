@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             session.setMaxInactiveInterval(Math.toIntExact(TimeUnit.MINUTES.toSeconds(15)));
             resp.sendRedirect(req.getContextPath() + "/chat");
         } else {
-            req.setAttribute("login-result", "Введено неверное имя пользователя или пароль!");
+            req.setAttribute("loginResult", "Введено неверное имя пользователя или пароль!");
             req.getRequestDispatcher("login.jsp").forward(req, resp);
         }
     }

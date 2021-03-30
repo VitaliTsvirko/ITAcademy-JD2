@@ -7,7 +7,6 @@
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <meta name="description" content="">
-
 </head>
 
 <body>
@@ -20,13 +19,9 @@
       <div class="auth-form px-3">
         <div class="auth-form-header p-0">
             <h1>Регистрация нового пользователя</h1>
-            <%
-                if (request.getAttribute("signup-result") != null){
-                    out.println("<p class=\"text-danger\">");
-                    out.println(request.getAttribute("signup-result"));
-                    out.println("</p>");
-                }
-            %>
+            <c:if test="${requestScope.signupResult != null}">
+                <p class="text-danger">${requestScope.signupResult}</p>
+            </c:if>
         </div>
 
         <div class="auth-form-body mt-3">
@@ -52,8 +47,6 @@
         </div>
 
     </div>
-
-
 
     </main>
 

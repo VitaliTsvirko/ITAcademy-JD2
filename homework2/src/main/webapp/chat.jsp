@@ -1,9 +1,7 @@
-<%@ page import="by.it_academy.jd2.messenger.model.storage.api.IMessages" %>
-<%@ page import="by.it_academy.jd2.messenger.model.dto.Message" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -26,18 +24,15 @@
                     <div class="card-header"><span class="card-title">Общий чат</span></div>
 
                     <div class="msg-windows">
-                        <%
-                            List<Message> messages = (List<Message>) request.getAttribute("messages");
-                            for (Message message : messages) {
-                        %>
-                        <p class="msg-p">
-                            <span class="msg-time"> <%= message.getMessageTimeStamp().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss")) %> </span>
-                            <span class="msg-user"> <%= message.getUser() %>: </span>
-                            <span class="msg-message"> <%= message.getMessage() %></span>
-                        </p>
-                        <%
-                        }
-                        %>
+                        <c:forEach items="${requestScope.messages}"
+                                   var="message">
+                            <p class="msg-p">
+                                <fmt:parseDate value="${message.messageTimeStamp}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedTimeStamp" type="both" />
+                                <span class="msg-time"> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedTimeStamp}"/> </span>
+                                <span class="msg-user"> ${message.user}: </span>
+                                <span class="msg-message"> ${message.message}</span>
+                            </p>
+                        </c:forEach>
                     </div>
 
                     <div class="card-footer">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -23,13 +23,15 @@
                     <h3>Данные для входа</h3>
                 </div>
 
+
+
                 <div class="col">
                     <label class="form-label">Имя пользователя</label>
-                    <input type="text" class="form-control" value=<%= user.getName() %> readonly>
+                    <input type="text" class="form-control" value= ${sessionScope.user.name} readonly>
                 </div>
                 <div class="col">
                     <label class="form-label">Пароль</label>
-                    <input type="text" class="form-control" value=<%= user.getPassword() %> readonly>
+                    <input type="text" class="form-control" value= ${sessionScope.user.password} readonly>
                 </div>
             </div>
 
@@ -39,15 +41,22 @@
                 </div>
                 <div class="col">
                     <label class="form-label">Имя</label>
-                    <input type="text" class="form-control" value=<%= user.getFirstName() %> readonly>
+                    <input type="text" class="form-control" value= ${sessionScope.user.firstName} readonly>
                 </div>
                 <div class="col">
                     <label class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" value=<%= user.getLastName() %> readonly>
+                    <input type="text" class="form-control" value= ${sessionScope.user.lastName} readonly>
                 </div>
                 <div class="col">
                     <label class="form-label">Дата рождения</label>
-                    <input type="date" class="form-control" value=<%= user.getDateOfBirth() %> readonly>
+                    <c:choose>
+                        <c:when test="${sessionScope.user.dateOfBirth == null}">
+                            <input type="text" class="form-control" value= "" readonly>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="date" class="form-control" value= ${sessionScope.user.dateOfBirth} readonly>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
