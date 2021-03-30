@@ -26,7 +26,7 @@ class UserServiceTest {
         user.setFirstName("Vitali");
         Assert.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
 
-        user.setFirstName("Tsvirko");
+        user.setLastName("Tsvirko");
         Assertions.assertDoesNotThrow(() -> userService.signUp(user));
     }
 
