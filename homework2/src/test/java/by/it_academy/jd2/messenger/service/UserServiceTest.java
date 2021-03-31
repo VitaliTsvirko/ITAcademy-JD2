@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class UserServiceTest {
     private final IUserService userService = UserService.getInstance();
 

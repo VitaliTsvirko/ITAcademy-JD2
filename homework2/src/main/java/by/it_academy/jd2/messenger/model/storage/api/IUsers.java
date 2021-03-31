@@ -1,6 +1,5 @@
 package by.it_academy.jd2.messenger.model.storage.api;
 
-import by.it_academy.jd2.messenger.model.dto.Message;
 import by.it_academy.jd2.messenger.model.dto.User;
 
 import java.util.Map;

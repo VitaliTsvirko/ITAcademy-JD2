@@ -1,20 +1,16 @@
 package by.it_academy.jd2.messenger.controller.servlets;
 
 import by.it_academy.jd2.messenger.model.storage.api.IMessages;
-import by.it_academy.jd2.messenger.model.storage.api.IUsers;
 import by.it_academy.jd2.messenger.model.dto.Message;
 import by.it_academy.jd2.messenger.model.dto.User;
 import by.it_academy.jd2.messenger.service.MessageService;
 import by.it_academy.jd2.messenger.service.api.IMessageService;
-import by.it_academy.jd2.messenger.service.api.IUserService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 /**
  * Данный класс предназначен работы с сообщениями чата

@@ -12,8 +12,6 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 
-import java.time.LocalDate;
-
 /**
  * Данный класс предназначен для инициализации переменных приложения.
  * <p>Переменные сохраняются в servletContext</p>

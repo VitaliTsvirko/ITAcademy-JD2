@@ -1,7 +1,5 @@
 package by.it_academy.jd2.messenger.controller.servlets.authentication;
 
-import by.it_academy.jd2.messenger.model.dto.User;
-import by.it_academy.jd2.messenger.model.storage.api.IUsers;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
