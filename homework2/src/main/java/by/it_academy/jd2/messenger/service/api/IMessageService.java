@@ -4,6 +4,9 @@ import by.it_academy.jd2.messenger.model.dto.Message;
 
 import java.util.List;
 
+/**
+ * @author Vitali Tsvirko
+ */
 public interface IMessageService {
     /**
      * Данный метод переназначен для получения всех сообщений
