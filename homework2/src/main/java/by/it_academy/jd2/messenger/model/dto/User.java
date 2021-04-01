@@ -30,6 +30,13 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public User(String name, String password, String firstName, String lastName) {
+        this.name = name;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public String getName() {
         return name;
     }
