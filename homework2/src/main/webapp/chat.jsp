@@ -30,7 +30,7 @@
                                 <fmt:parseDate value="${message.messageTimeStamp}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedTimeStamp" type="both" />
                                 <span class="msg-time"> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedTimeStamp}"/> </span>
                                 <span class="msg-user"> ${message.user}: </span>
-                                <span class="msg-message"> ${message.message}</span>
+                                <span class="msg-message"> <c:out value="${message.message}"/></span>
                             </p>
                         </c:forEach>
                     </div>

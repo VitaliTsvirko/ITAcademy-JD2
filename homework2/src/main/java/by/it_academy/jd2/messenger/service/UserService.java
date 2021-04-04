@@ -21,7 +21,7 @@ import java.util.Map;
  * @see User
  */
 public class UserService implements IUserService {
-    private static UserService instance;
+    private static volatile UserService instance;
     private final IUsers userStorage;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

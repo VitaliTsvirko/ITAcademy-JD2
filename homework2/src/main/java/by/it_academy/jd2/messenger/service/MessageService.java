@@ -19,7 +19,7 @@ import java.util.List;
  * @see Message
  */
 public class MessageService implements IMessageService {
-    private static MessageService instance;
+    private static volatile MessageService instance;
     private final IMessages messageStorage;
 
     private MessageService(){

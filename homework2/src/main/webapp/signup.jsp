@@ -28,10 +28,14 @@
             <form action="signup" method="POST" class="form-group required">
 
                 <label for="inputName" class="sr-only">Имя пользователя</label>
-                <input type="text" name="name" id="inputName" class="form-control input-block" placeholder="Имя пользователя" required autofocus >
+                <input type="text" pattern="[a-zA-Z'-''_'\d]*" name="name" id="inputName" class="form-control input-block" placeholder="Имя пользователя"
+                       title="Имя должно содержать только буквы английского алфавита, цифры, знак подчеркивания или тире"
+                       required autofocus >
 
                 <label class="sr-only">Пароль</label>
-                <input type="password" name="password" placeholder="Пароль" class="form-control input-block" required>
+                <input type="password" pattern="\D[^\s]*" name="password" placeholder="Пароль" class="form-control input-block"
+                       title="Пароль не должен содержать пробелов"
+                       required>
 
                 <label class="sr-only">Имя</label>
                 <input type="text" name="firstname" placeholder="Имя" class="form-control input-block" required>
@@ -51,8 +55,8 @@
     </main>
 
     <%@include file="footer.jsp"%>
+    <script src="static/bootstrap-5.0.0/js/bootstrap.min.js"></script>
  </body>
-
 </html>
 
 
