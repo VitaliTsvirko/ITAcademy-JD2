@@ -27,7 +27,15 @@
                 <form action="login" method="POST" class="form-signin">
 
                     <label for="inputName" class="sr-only">Имя пользователя</label>
-                    <input type="text" name="name" id="inputName" class="form-control input-block" placeholder="Имя пользователя" required autofocus >
+                    <c:choose>
+                        <c:when test="${sessionScope.newUserSignUp == null}">
+                            <input type="text" name="name" id="inputName" class="form-control input-block" placeholder="Имя пользователя" required autofocus >
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" name="name" id="inputName" class="form-control input-block" placeholder="Имя пользователя" value="${sessionScope.newUserSignUp}" required autofocus >
+                            <% request.getSession().removeAttribute("newUserSignUp"); %>
+                        </c:otherwise>
+                    </c:choose>
 
                     <label for="inputPassword" class="sr-only">Пароль</label>
                     <input type="password" name="password" id="inputPassword" class="form-control input-block" placeholder="Пароль" required>

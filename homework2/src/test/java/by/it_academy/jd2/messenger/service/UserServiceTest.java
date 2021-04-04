@@ -4,13 +4,11 @@ import by.it_academy.jd2.messenger.model.dto.User;
 import by.it_academy.jd2.messenger.model.storage.UserMemoryStorage;
 import by.it_academy.jd2.messenger.service.api.IUserService;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
 
 
 class UserServiceTest {
@@ -48,6 +46,66 @@ class UserServiceTest {
         this.user.setLastName("LastName");
         Assertions.assertDoesNotThrow(() -> userService.signUp(this.user));
     }
+
+    @Test
+    void TestSignUp_UserNameValidation(){
+        this.user = new User("user",
+                "password",
+                "FirstName",
+                "LastName");
+
+        this.user.setName("привет");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName("us er");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName("user ");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName(" user");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName(" ");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName("user!");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName("#,.$?<>()");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setName("user_user");
+        Assertions.assertDoesNotThrow(() -> userService.signUp(user));
+
+        this.user.setName("user-user");
+        Assertions.assertDoesNotThrow(() -> userService.signUp(user));
+    }
+
+    @Test
+    void TestSignUp_PasswordValidation(){
+        this.user = new User("user",
+                "password",
+                "FirstName",
+                "LastName");
+
+
+        /*user.setPassword("#!!!");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));*/
+
+        this.user.setPassword("a a");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setPassword(" a");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setPassword("a  ");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+
+        this.user.setPassword(" ");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.signUp(user));
+    }
+
 
     @Test
     void TestSignUp_WrongDateOfBirth() {

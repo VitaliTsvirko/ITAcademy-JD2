@@ -55,7 +55,6 @@
     </main>
 
     <%@include file="footer.jsp"%>
-    <script src="static/bootstrap-5.0.0/js/bootstrap.min.js"></script>
  </body>
 </html>
 

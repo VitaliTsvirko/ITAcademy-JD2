@@ -45,6 +45,7 @@ public class SignUpServlet extends HttpServlet {
 
         try{
             usersService.signUp(user);
+            req.getSession().setAttribute("newUserSignUp", user.getName());
             resp.sendRedirect("login.jsp");
         } catch (IllegalArgumentException e) {
             req.setAttribute("signupResult", e.getMessage());

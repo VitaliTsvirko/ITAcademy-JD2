@@ -27,11 +27,11 @@
 
                 <div class="col">
                     <label class="form-label">Имя пользователя</label>
-                    <input type="text" class="form-control" value= <c:out value="${sessionScope.user.name}"/> readonly>
+                    <input type="text" class="form-control" value="<c:out value="${sessionScope.user.name}"/>" readonly>
                 </div>
                 <div class="col">
                     <label class="form-label">Пароль</label>
-                    <input type="text" class="form-control" <c:out value="value= ${sessionScope.user.password}"/> readonly>
+                    <input type="text" class="form-control" value="<c:out value="${sessionScope.user.password}"/>" readonly>
                 </div>
             </div>
 
@@ -41,11 +41,11 @@
                 </div>
                 <div class="col">
                     <label class="form-label">Имя</label>
-                    <input type="text" class="form-control" <c:out value="value= ${sessionScope.user.firstName}"/> readonly>
+                    <input type="text" class="form-control" value="<c:out value="${sessionScope.user.firstName}"/>" readonly>
                 </div>
                 <div class="col">
                     <label class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" value= <c:out value="${sessionScope.user.lastName}"/> readonly>
+                    <input type="text" class="form-control" value="<c:out value="${sessionScope.user.lastName}"/>" readonly>
                 </div>
                 <div class="col">
                     <label class="form-label">Дата рождения</label>
@@ -54,7 +54,7 @@
                             <input type="text" class="form-control" value= "" readonly>
                         </c:when>
                         <c:otherwise>
-                            <input type="date" class="form-control" value= <c:out value="${sessionScope.user.dateOfBirth}"/> readonly>
+                            <input type="date" class="form-control" value="<c:out value="${sessionScope.user.dateOfBirth}"/>" readonly>
                         </c:otherwise>
                     </c:choose>
                 </div>

@@ -24,6 +24,8 @@ public class UserService implements IUserService {
     private static volatile UserService instance;
     private final IUsers userStorage;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final String USER_NAME_PATTERN = "[A-Za-z\\d-_]*";
+    private final String USER_PASSWORD_PATTERN = "\\S*";
 
     private UserService(){
         this.userStorage = new UserMemoryStorage();
@@ -87,10 +89,18 @@ public class UserService implements IUserService {
     public void signUp(User user) throws IllegalArgumentException{
         if (StringUtils.isEmpty(user.getName())){
             throw new IllegalArgumentException("Не задано имя пользователя");
+        } else {
+            if (!user.getName().matches(this.USER_NAME_PATTERN)){
+                throw new IllegalArgumentException("Имя должно содержать только буквы английского алфавита, цифры, знак подчеркивания или тире");
+            }
         }
 
         if (StringUtils.isEmpty(user.getPassword())){
             throw new IllegalArgumentException("Не задан пароль");
+        } else {
+            if (!user.getPassword().matches(this.USER_PASSWORD_PATTERN)){
+                throw new IllegalArgumentException("Пароль не должен содержать пробелов");
+            }
         }
 
         if (StringUtils.isEmpty(user.getFirstName())){
