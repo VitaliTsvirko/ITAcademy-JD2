@@ -3,6 +3,7 @@ package by.it_academy.jd2.airports.service;
 import by.it_academy.jd2.airports.core.utils.StringUtils;
 import by.it_academy.jd2.airports.model.dao.FlightsDao;
 import by.it_academy.jd2.airports.model.dto.Flights;
+import by.it_academy.jd2.airports.model.dto.Lang;
 
 import java.beans.PropertyVetoException;
 import java.time.LocalDate;
@@ -40,13 +41,13 @@ public class FlightsSearcherService {
         return instance;
     }
 
-    public List<Flights> findFlight (String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate, int limit, int pageNo) {
-        long flightsCount = getFlightsCount(departureAirportCode, arrivalAirportCode);
+    public List<Flights> findFlight (Lang lang, String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate, int limit, int pageNo) {
+        int flightsCount = getFlightsCount(departureAirportCode, arrivalAirportCode);
 
-        long offset = requestOffsetCalc(flightsCount, limit, pageNo);
+        int offset = requestOffsetCalc(flightsCount, limit, pageNo);
 
         if (StringUtils.isAnyNullOrEmpty(departureDate, arrivalDate)){
-            return ticketsDao.getFlightsByAirportsCode(departureAirportCode, arrivalAirportCode, limit, (int) offset);
+            return ticketsDao.getFlightsByAirportsCode(lang, departureAirportCode, arrivalAirportCode, limit, (int) offset);
         } else {
             return ticketsDao.getFlightsByAirportsCodeAndDate(departureAirportCode, arrivalAirportCode, LocalDate.parse(departureDate));
         }
@@ -54,7 +55,7 @@ public class FlightsSearcherService {
 
 
 
-    public long getFlightsCount (String departureAirportCode, String arrivalAirportCode){
+    public int getFlightsCount (String departureAirportCode, String arrivalAirportCode){
         return ticketsDao.getTicketsCountByAirportsCode(departureAirportCode, arrivalAirportCode);
     }
 
@@ -71,7 +72,7 @@ public class FlightsSearcherService {
      *         вернется значение смещения для последней возможной страницы</p>
      *         <p>Если номер запрашиваемой страницы меньше нуля то вернется ноль</p>
      */
-    private long requestOffsetCalc (long flightCount, int pageLimit, int pageNo){
+    private int requestOffsetCalc (int flightCount, int pageLimit, int pageNo){
         if (pageNo <= 0) {
             return 0;
         }
@@ -83,7 +84,7 @@ public class FlightsSearcherService {
         if (tmpOffset < flightCount) {
             return tmpOffset;
         } else {
-            long pageCount = flightCount / pageLimit;
+            int pageCount = flightCount / pageLimit;
 
             return flightCount - (flightCount - pageCount * pageLimit);
         }

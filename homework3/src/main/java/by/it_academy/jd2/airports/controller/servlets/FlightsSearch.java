@@ -1,6 +1,7 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
 import by.it_academy.jd2.airports.model.dto.Flights;
+import by.it_academy.jd2.airports.model.dto.Lang;
 import by.it_academy.jd2.airports.service.AirportsDataService;
 import by.it_academy.jd2.airports.service.FlightsSearcherService;
 import jakarta.servlet.ServletException;
@@ -27,12 +28,10 @@ public class FlightsSearch extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("lang") == null){
-            req.getSession().setAttribute("lang", "ru");
-        }
+        Lang lang = (Lang) req.getSession().getAttribute("lang");
 
         try{
-            this.airportsMap = airportsDataService.getAllAirportsCodeAndName(req.getSession().getAttribute("lang").toString());
+            this.airportsMap = airportsDataService.getAllAirportsCodeAndName(lang);
             req.setAttribute("airportsMap", airportsMap);
         } catch (ClassNotFoundException | SQLException | PropertyVetoException e) {
             e.printStackTrace();
@@ -46,13 +45,13 @@ public class FlightsSearch extends HttpServlet {
                 String arrivalAirport = req.getParameter("arrivalAirport");
                 String pageNo = req.getParameter("pageNo");
 
-                long flightsTotalCount = flightsSearcherService.getFlightsCount(departureAirport, arrivalAirport);
+                int flightsTotalCount = flightsSearcherService.getFlightsCount(departureAirport, arrivalAirport);
 
                 if(flightsTotalCount > 0){
                     int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / ITEMS_PER_PAGE);
                     int requestPageNo = (pageNo != null) ? Math.min(Integer.parseInt(pageNo), totalPages) : 1;
 
-                    List<Flights> flights = flightsSearcherService.findFlight(departureAirport, arrivalAirport, null, null, ITEMS_PER_PAGE, requestPageNo);
+                    List<Flights> flights = flightsSearcherService.findFlight(lang, departureAirport, arrivalAirport, null, null, ITEMS_PER_PAGE, requestPageNo);
                     req.setAttribute("flightsData", flights);
 
                     req.setAttribute("totalPages", totalPages);

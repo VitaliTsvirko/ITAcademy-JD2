@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <%!  private static String getFlightNoun(String value) {
     int lastNumber = Integer.parseInt(value.substring(value.length() - 1));
@@ -25,7 +25,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
 
-    <c:set var="queryString" value="${pageContext.request.contextPath}/search?"/>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}/search"/>
+
+    <c:set var="queryString" value="?"/>
     <c:if test="${not empty requestScope.departureDate}">
         <c:set var="queryString" value="${queryString}&departureDate=${requestScope.departureDate}"/>
     </c:if>
@@ -48,23 +50,33 @@
         <div class="row">
             <div class="col">
                 <label for="departureDate" class="sr-only">Дата вылета</label>
-                <input type="date" name="departureDate" id="departureDate" class="form-control input-block" placeholder="Дата вылета" autofocus >
+                <input type="date" name="departureDate" id="departureDate" class="form-control input-block" placeholder="Дата вылета" >
             </div>
 
             <div class="col">
                 <label for="departureAirport" class="sr-only">Аэропорт вылета</label>
                 <p><select class="form-select" name="departureAirport" id="departureAirport" aria-label="Аэропорт вылета" required>
-                    <c:forEach items="${requestScope.airportsMap}"
-                               var="airport">
-                        <c:choose>
-                            <c:when test="${airport.key.equalsIgnoreCase(\"DME\")}">
-                                <option selected value="${airport.key}">${airport.value}</option>
-                            </c:when>
-                            <c:otherwise>
+                    <c:choose>
+                        <c:when test="${empty requestScope.departureAirport}">
+                            <c:forEach items="${requestScope.airportsMap}"
+                                       var="airport">
                                 <option value="${airport.key}">${airport.value}</option>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${requestScope.airportsMap}"
+                                       var="airport">
+                                <c:choose>
+                                    <c:when test="${airport.key.equalsIgnoreCase(requestScope.departureAirport)}">
+                                        <option selected value="${airport.key}">${airport.value}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${airport.key}">${airport.value}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </select></p>
             </div>
 
@@ -76,17 +88,27 @@
             <div class="col">
                 <label for="arrivalAirport" class="sr-only">Аэропорт прилета</label>
                 <p><select class="form-select" name="arrivalAirport" id="arrivalAirport" aria-label="Аэропорт прилета" required>
-                    <c:forEach items="${requestScope.airportsMap}"
-                               var="airport">
-                        <c:choose>
-                            <c:when test="${airport.key.equalsIgnoreCase(\"ROV\")}">
-                                <option selected value="${airport.key}">${airport.value}</option>
-                            </c:when>
-                            <c:otherwise>
+                    <c:choose>
+                        <c:when test="${empty requestScope.arrivalAirport}">
+                            <c:forEach items="${requestScope.airportsMap}"
+                                       var="airport">
                                 <option value="${airport.key}">${airport.value}</option>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${requestScope.airportsMap}"
+                                       var="airport">
+                                <c:choose>
+                                    <c:when test="${airport.key.equalsIgnoreCase(requestScope.arrivalAirport)}">
+                                        <option selected value="${airport.key}">${airport.value}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${airport.key}">${airport.value}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </select></p>
             </div>
             <div class="col-1" style="padding-top: 23px;">
@@ -94,6 +116,15 @@
             </div>
         </div>
     </form>
+
+    <c:if test="${requestScope.flightsData == null and not empty requestScope.departureAirport}">
+        <div class="row">
+            <div class="col">
+                <span class="align-middle">По заданным критериям рейсов не найдено</span>
+            </div>
+        </div>
+    </c:if>
+
 
     <c:if test="${requestScope.flightsData != null}">
         <div class="row">
@@ -107,11 +138,12 @@
                 <table class="table table-hover table-responsive">
                     <thead>
                     <tr>
-                        <th scope="col">flight_no</th>
-                        <th scope="col">departure_airport</th>
-                        <th scope="col">arrival_airport</th>
-                        <th scope="col">scheduled_departure</th>
-                        <th scope="col">scheduled_arrival</th>
+                        <th scope="col">Номер рейса</th>
+                        <th scope="col">Расписание вылета</th>
+                        <th scope="col">Расписание прилета</th>
+                        <th scope="col">Актуальное время вылета</th>
+                        <th scope="col">Актуальное время прилета</th>
+                        <th scope="col">Модель самолета</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -119,10 +151,11 @@
                                var="data">
                         <tr>
                             <td>${data.flight_no}</td>
-                            <td>${data.departure_airport}</td>
-                            <td>${data.arrival_airport}</td>
                             <td>${data.scheduled_departure}</td>
                             <td>${data.scheduled_arrival}</td>
+                            <td>${data.actual_departure}</td>
+                            <td>${data.actual_arrival}</td>
+                            <td>${data.aircraft_model}</td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -138,7 +171,7 @@
                             <li class="page-item disabled"><a class="page-link" href="#">Назад</a></li>
                         </c:when>
                         <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="${queryString}&pageNo=${requestScope.pageNo-1}">Назад</a></li>
+                            <li class="page-item"><a class="page-link" href="$${contextPath}${queryString}&pageNo=${requestScope.pageNo-1}">Назад</a></li>
                         </c:otherwise>
                     </c:choose>
 
@@ -158,7 +191,7 @@
                             <li class="page-item disabled"><a class="page-link" href="#">Вперед</a></li>
                         </c:when>
                         <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="${queryString}&pageNo=${requestScope.pageNo+1}">Вперед</a></li>
+                            <li class="page-item"><a class="page-link" href="${contextPath}${queryString}&pageNo=${requestScope.pageNo+1}">Вперед</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

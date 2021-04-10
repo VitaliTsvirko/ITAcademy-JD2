@@ -2,6 +2,7 @@ package by.it_academy.jd2.airports.model.dao;
 
 import by.it_academy.jd2.airports.model.dao.core.ConnectionPoolCreator;
 import by.it_academy.jd2.airports.model.dto.AirportsData;
+import by.it_academy.jd2.airports.model.dto.Lang;
 import org.postgresql.geometric.PGpoint;
 
 import javax.sql.DataSource;
@@ -25,7 +26,7 @@ public class AirportsDao {
     public AirportsDao() throws PropertyVetoException {
     }
 
-    public List<AirportsData> getAllAirportsData(String langCode) {
+    public List<AirportsData> getAllAirportsData(Lang lang) {
         List<AirportsData> result = new LinkedList<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name, " +
                         "ml.city ->> ? AS city, ml.coordinates, ml.timezone " +
@@ -33,8 +34,8 @@ public class AirportsDao {
 
         try (Connection connection = dataSource.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(sql)){
-                ps.setString(1, langCode);
-                ps.setString(2, langCode);
+                ps.setString(1, lang.getTextCode());
+                ps.setString(2, lang.getTextCode());
 
                 try(ResultSet rs = ps.executeQuery()) {
 
@@ -63,7 +64,7 @@ public class AirportsDao {
     }
 
 
-    public Map<String, String> getAllAirportsCodeAndName(String langCode){
+    public Map<String, String> getAllAirportsCodeAndName(Lang lang){
         Map<String, String> result = new LinkedHashMap<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name " +
                      "FROM bookings.airports_data ml " +
@@ -71,7 +72,7 @@ public class AirportsDao {
 
         try (Connection connection = dataSource.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, langCode);
+                ps.setString(1, lang.getTextCode());
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -90,8 +91,8 @@ public class AirportsDao {
     public static void main(String[] args) throws ClassNotFoundException, SQLException, PropertyVetoException {
         AirportsDao airportDao = new AirportsDao();
 
-        List<AirportsData> airportsData = airportDao.getAllAirportsData("ru");
-        Map<String, String> airportsMap = airportDao.getAllAirportsCodeAndName("ru");
+        List<AirportsData> airportsData = airportDao.getAllAirportsData(Lang.RU);
+        Map<String, String> airportsMap = airportDao.getAllAirportsCodeAndName(Lang.RU);
 
         System.out.println(airportsData.size());
         System.out.println(airportsMap.size());

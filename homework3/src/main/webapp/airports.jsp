@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
+    <c:set var="contextPath" value="${pageContext.request.contextPath}/"/>
 </head>
 
 <body>
@@ -17,11 +18,11 @@
     <table class="table table-hover table-responsive">
         <thead>
         <tr>
-            <th scope="col">airport_code</th>
-            <th scope="col">airport_name</th>
-            <th scope="col">city</th>
-            <th scope="col">coordinates</th>
-            <th scope="col">timezone</th>
+            <th scope="col">Код аэропорта</th>
+            <th scope="col">Название аэропорта</th>
+            <th scope="col">Город</th>
+            <th scope="col">Координаты</th>
+            <th scope="col">Часовой пояс</th>
         </tr>
         </thead>
         <tbody>

@@ -1,5 +1,6 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
+import by.it_academy.jd2.airports.model.dto.Lang;
 import by.it_academy.jd2.airports.service.AirportsDataService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -18,12 +19,10 @@ public class AirportsData extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("lang") == null){
-            req.getSession().setAttribute("lang", "ru");
-        }
+        Lang lang = (Lang) req.getSession().getAttribute("lang");
 
         try{
-            req.setAttribute("allAirportsData", airportsDataService.getAllAirportsData(req.getSession().getAttribute("lang").toString()));
+            req.setAttribute("allAirportsData", airportsDataService.getAllAirportsData(lang));
         } catch (ClassNotFoundException | SQLException | PropertyVetoException e) {
             e.printStackTrace();
         }

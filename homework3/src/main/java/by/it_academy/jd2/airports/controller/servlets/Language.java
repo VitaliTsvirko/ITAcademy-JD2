@@ -1,5 +1,7 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
+import by.it_academy.jd2.airports.model.dto.Lang;
+import com.oracle.wls.shaded.org.apache.bcel.generic.LNEG;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,15 +18,16 @@ public class Language extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String lang = req.getParameter("lang");
+        String pageUrl = req.getParameter("pageURL");
 
         if (lang != null){
-            if (lang.equalsIgnoreCase("en")){
-                req.getSession().setAttribute("lang", "en");
+            if (lang.equalsIgnoreCase(Lang.EN.getTextCode())){
+                req.getSession().setAttribute("lang", Lang.EN);
             } else {
-                req.getSession().setAttribute("lang", "ru");
+                req.getSession().setAttribute("lang",  Lang.RU);
             }
         }
 
-        resp.sendRedirect(req.getContextPath());
+        resp.sendRedirect(pageUrl);
     }
 }

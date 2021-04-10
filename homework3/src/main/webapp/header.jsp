@@ -4,6 +4,15 @@
 <link href="static/css/navbar.css" rel="stylesheet">
 
 <header>
+    <c:choose>
+        <c:when test="${not empty queryString}">
+            <c:set var="pageURL" value="${contextPath}${queryString}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="pageURL" value="${contextPath}"/>
+        </c:otherwise>
+    </c:choose>
+
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-xxl">
         <div class="collapse navbar-collapse">
@@ -20,11 +29,13 @@
                 <li>
                     <form action="lang" method="POST">
                         <c:choose>
-                            <c:when test="${sessionScope.lang.equalsIgnoreCase(\"en\")}">
+                            <c:when test="${sessionScope.lang.textCode.equalsIgnoreCase(\"en\")}">
+                                <input type="hidden" name="pageURL" value="${pageURL}">
                                 <input type="submit" class="btn btn-outline-secondary" name="lang" value="Ru">
                                 <input type="submit" class="btn btn-outline-primary" name="lang" value="En">
                             </c:when>
                             <c:otherwise>
+                                <input type="hidden" name="pageURL" value="${pageURL}">
                                 <input type="submit" class="btn btn-outline-primary" name="lang" value="Ru">
                                 <input type="submit" class="btn btn-outline-secondary" name="lang" value="En">
                             </c:otherwise>
@@ -36,3 +47,4 @@
     </div>
   </nav>
 </header>
+
