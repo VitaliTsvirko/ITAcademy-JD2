@@ -131,7 +131,15 @@
 
             <div class="col d-flex justify-content-end">
                 <ul class="pagination justify-content-right">
-                    <li class="page-item disabled"><a class="page-link" href="#">Назад</a></li>
+                    <c:choose>
+                        <c:when test="${empty requestScope.pageNo or requestScope.pageNo == 1}">
+                            <li class="page-item disabled"><a class="page-link" href="#">Назад</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="${queryString}&pageNo=${requestScope.pageNo-1}">Назад</a></li>
+                        </c:otherwise>
+                    </c:choose>
+
                     <li class="page-item">
                         <span class="page-link"> <c:choose>
                                 <c:when test="${empty requestScope.pageNo}"> 1 </c:when>
@@ -142,7 +150,15 @@
                             из ${requestScope.totalPages}
                         </span>
                     </li>
-                    <li class="page-item"><a class="page-link" href="${queryString}&pageNo=${requestScope.pageNo+1}">Вперед</a></li>
+
+                    <c:choose>
+                        <c:when test="${requestScope.pageNo == requestScope.totalPages}">
+                            <li class="page-item disabled"><a class="page-link" href="#">Вперед</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="${queryString}&pageNo=${requestScope.pageNo+1}">Вперед</a></li>
+                        </c:otherwise>
+                    </c:choose>
                 </ul>
             </div>
         </div>
