@@ -1,6 +1,5 @@
-package by.it_academy.jd2.messenger.core.utils;
+package by.it_academy.jd2.airports.core.utils;
 
-import by.it_academy.jd2.airports.core.utils.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,8 +1,8 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
-import by.it_academy.jd2.airports.model.dto.Tickets;
+import by.it_academy.jd2.airports.model.dto.Flights;
 import by.it_academy.jd2.airports.service.AirportsDataService;
-import by.it_academy.jd2.airports.service.TicketsSearcherService;
+import by.it_academy.jd2.airports.service.FlightsSearcherService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,8 +19,8 @@ import java.util.Map;
  * Created by Vitali Tsvirko
  */
 @WebServlet(urlPatterns = "/search")
-public class TicketsSearch extends HttpServlet {
-    private final TicketsSearcherService ticketsSearcherService = TicketsSearcherService.getInstance();
+public class FlightsSearch extends HttpServlet {
+    private final FlightsSearcherService flightsSearcherService = FlightsSearcherService.getInstance();
     private final AirportsDataService airportsDataService = AirportsDataService.getInstance();
     private Map<String, String> airportsMap;
     private final int ITEMS_PER_PAGE = 25;
@@ -46,26 +46,27 @@ public class TicketsSearch extends HttpServlet {
                 String arrivalAirport = req.getParameter("arrivalAirport");
                 String pageNo = req.getParameter("pageNo");
 
-                long ticketsTotalCount = ticketsSearcherService.getTicketsCount(departureAirport, arrivalAirport);
+                long flightsTotalCount = flightsSearcherService.getFlightsCount(departureAirport, arrivalAirport);
 
-                if(ticketsTotalCount > 0){
-                    int currentPage = (pageNo != null) ? Integer.parseInt(pageNo) : 1;
+                if(flightsTotalCount > 0){
+                    int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / ITEMS_PER_PAGE);
+                    int requestPageNo = (pageNo != null) ? Math.min(Integer.parseInt(pageNo), totalPages) : 1;
 
-                    List<Tickets> tickets = ticketsSearcherService.findTickets(departureAirport, arrivalAirport, null, null, ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-                    req.setAttribute("ticketsData", tickets);
+                    List<Flights> flights = flightsSearcherService.findFlight(departureAirport, arrivalAirport, null, null, ITEMS_PER_PAGE, requestPageNo);
+                    req.setAttribute("flightsData", flights);
 
-                    req.setAttribute("totalPages", ticketsTotalCount / ITEMS_PER_PAGE);
-                    req.setAttribute("pageNo", pageNo);
+                    req.setAttribute("totalPages", totalPages);
+                    req.setAttribute("pageNo", requestPageNo);
                 }
 
                 req.setAttribute("departureDate", departureDate);
                 req.setAttribute("departureAirport", departureAirport);
                 req.setAttribute("arrivalDate", arrivalDate);
                 req.setAttribute("arrivalAirport", arrivalAirport);
-                req.setAttribute("ticketsTotalCount", ticketsTotalCount);
+                req.setAttribute("flightsTotalCount", flightsTotalCount);
         }
 
-        req.getRequestDispatcher("ticketsSearch.jsp").forward(req, resp);
+        req.getRequestDispatcher("flightsSearch.jsp").forward(req, resp);
     }
 
 }

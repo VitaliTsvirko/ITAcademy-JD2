@@ -1,7 +1,7 @@
 package by.it_academy.jd2.airports.model.dao;
 
 import by.it_academy.jd2.airports.model.dao.core.ConnectionPoolCreator;
-import by.it_academy.jd2.airports.model.dto.Tickets;
+import by.it_academy.jd2.airports.model.dto.Flights;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -13,10 +13,10 @@ import java.util.List;
 /**
  * Created by Vitali Tsvirko
  */
-public class TicketsDao {
+public class FlightsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
 
-    public TicketsDao() throws PropertyVetoException {
+    public FlightsDao() throws PropertyVetoException {
     }
 
     public long getTicketsCountByAirportsCode(String departureAirportCode, String arrivalAirportCode){
@@ -42,15 +42,15 @@ public class TicketsDao {
 
 
 
-    public List<Tickets> getTicketsByAirportsCodeAndDate(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate){
-        List<Tickets> result = new ArrayList<>();
+    public List<Flights> getFlightsByAirportsCodeAndDate(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate){
+        List<Flights> result = new ArrayList<>();
 
         return result;
     }
 
 
-    public List<Tickets> getTicketsByAirportsCode(String departureAirportCode, String arrivalAirportCode, int limit, int offset){
-        List<Tickets> result = new ArrayList<>();
+    public List<Flights> getFlightsByAirportsCode(String departureAirportCode, String arrivalAirportCode, int limit, int offset){
+        List<Flights> result = new ArrayList<>();
         String sql = "SELECT flight_no, scheduled_departure, scheduled_arrival, departure_airport,  arrival_airport " +
                      "FROM flights WHERE departure_airport=? AND arrival_airport=? LIMIT ? OFFSET ?";
 
@@ -63,7 +63,7 @@ public class TicketsDao {
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        Tickets ticket = new Tickets();
+                        Flights ticket = new Flights();
                         ticket.setFlight_no(rs.getString("flight_no"));
                         ticket.setScheduled_departure(rs.getString("scheduled_departure"));
                         ticket.setScheduled_arrival(rs.getString("scheduled_arrival"));

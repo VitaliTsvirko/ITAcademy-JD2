@@ -1,7 +1,7 @@
 package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.model.dao.AirportsDao;
-import by.it_academy.jd2.airports.model.dao.TicketsDao;
+import by.it_academy.jd2.airports.model.dao.FlightsDao;
 import by.it_academy.jd2.airports.model.dto.AirportsData;
 
 import java.beans.PropertyVetoException;
@@ -15,11 +15,11 @@ import java.util.Map;
 public class AirportsDataService {
     private static volatile AirportsDataService instance;
     private final AirportsDao airportDao;
-    private final TicketsDao ticketsDao;
+    private final FlightsDao ticketsDao;
 
     private AirportsDataService() throws PropertyVetoException {
         airportDao = new AirportsDao();
-        ticketsDao = new TicketsDao();
+        ticketsDao = new FlightsDao();
     }
 
     /**

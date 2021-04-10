@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Vitali Tsvirko
  */
-public class Tickets implements Serializable {
+public class Flights implements Serializable {
     private String flight_no;
     private String departure_airport;
     private String arrival_airport;

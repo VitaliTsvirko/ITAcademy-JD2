@@ -20,8 +20,8 @@ public class ConnectionPoolCreator {
         cpds.setPassword("postgres");
         cpds.setMinPoolSize(5);
         cpds.setAcquireIncrement(5);
-        cpds.setMaxPoolSize(5);
-        cpds.setMaxStatements(5);
+        cpds.setMaxPoolSize(10);
+        cpds.setMaxStatements(10);
     }
 
     public static DataSource getInstance() throws PropertyVetoException {

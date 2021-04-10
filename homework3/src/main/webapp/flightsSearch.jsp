@@ -3,16 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%!  private static String getTicketNoun(String value) {
+<%!  private static String getFlightNoun(String value) {
     int lastNumber = Integer.parseInt(value.substring(value.length() - 1));
     if (lastNumber == 1) {
-        return "билет";
+        return "рейс";
     }
     if (lastNumber >= 2 && lastNumber <= 4) {
-        return "билета";
+        return "рейса";
     }
     if (lastNumber >= 5 && lastNumber <= 9 || lastNumber == 0) {
-        return "билетов";
+        return "рейсов";
     }
     return "";
     }
@@ -20,7 +20,7 @@
 
 <html>
 <head>
-    <title>Аэропорты - Фильтр</title>
+    <title>Рейсы</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -95,7 +95,13 @@
         </div>
     </form>
 
-    <c:if test="${requestScope.ticketsData != null}">
+    <c:if test="${requestScope.flightsData != null}">
+        <div class="row">
+            <div class="col">
+                <span class="align-middle">Найдено ${requestScope.flightsTotalCount} <%=getFlightNoun(request.getAttribute("flightsTotalCount").toString())%> </span>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col" style=" height: 650px; overflow-y: scroll;">
                 <table class="table table-hover table-responsive">
@@ -109,7 +115,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${requestScope.ticketsData}"
+                    <c:forEach items="${requestScope.flightsData}"
                                var="data">
                         <tr>
                             <td>${data.flight_no}</td>
@@ -125,10 +131,6 @@
         </div>
 
         <div class="row align-items-center">
-            <div class="col">
-                <span class="align-middle">Найдено ${requestScope.ticketsTotalCount} <%=getTicketNoun(request.getAttribute("ticketsTotalCount").toString())%> </span>
-            </div>
-
             <div class="col d-flex justify-content-end">
                 <ul class="pagination justify-content-right">
                     <c:choose>
@@ -142,7 +144,7 @@
 
                     <li class="page-item">
                         <span class="page-link"> <c:choose>
-                                <c:when test="${empty requestScope.pageNo}"> 1 </c:when>
+                                <c:when test="${empty requestScope.pageNo or requestScope.pageNo <= 0}"> 1 </c:when>
                                 <c:otherwise>
                                     ${requestScope.pageNo}
                                 </c:otherwise>
