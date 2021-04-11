@@ -24,7 +24,8 @@ public class AirportsData extends HttpServlet {
         try{
             req.setAttribute("allAirportsData", airportsDataService.getAllAirportsData(lang));
         } catch (ClassNotFoundException | SQLException | PropertyVetoException e) {
-            e.printStackTrace();
+            req.setAttribute("error", true);
+            req.setAttribute("errorMessage", "Ошибка работы с базой данных. Попробуйте повторить запрос позже...");
         }
 
         req.getRequestDispatcher("airports.jsp").forward(req, resp);

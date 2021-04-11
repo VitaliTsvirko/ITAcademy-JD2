@@ -6,6 +6,7 @@ import by.it_academy.jd2.airports.model.dto.Flights;
 import by.it_academy.jd2.airports.model.dto.Lang;
 
 import java.beans.PropertyVetoException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,10 +15,10 @@ import java.util.List;
  */
 public class FlightsSearcherService {
     private static volatile FlightsSearcherService instance;
-    private final FlightsDao ticketsDao;
+    private final FlightsDao flightsDao;
 
     private FlightsSearcherService() throws PropertyVetoException {
-        ticketsDao = new FlightsDao();
+        flightsDao = new FlightsDao();
     }
 
     /**
@@ -41,22 +42,34 @@ public class FlightsSearcherService {
         return instance;
     }
 
-    public List<Flights> findFlight (Lang lang, String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate, int limit, int pageNo) {
-        int flightsCount = getFlightsCount(departureAirportCode, arrivalAirportCode);
+    public List<Flights> findFlights(Lang lang, String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate, int limit, int pageNo) throws SQLException, IllegalArgumentException {
+        if (StringUtils.isAnyNullOrEmpty(departureAirportCode, arrivalAirportCode)){
+            throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
+        }
+
+        int flightsCount = getFlightsCount(departureAirportCode, arrivalAirportCode, departureDate, arrivalDate);
 
         int offset = requestOffsetCalc(flightsCount, limit, pageNo);
 
         if (StringUtils.isAnyNullOrEmpty(departureDate, arrivalDate)){
-            return ticketsDao.getFlightsByAirportsCode(lang, departureAirportCode, arrivalAirportCode, limit, (int) offset);
+            return flightsDao.getFlightsByAirportsCode(lang, departureAirportCode, arrivalAirportCode, limit, offset);
         } else {
-            return ticketsDao.getFlightsByAirportsCodeAndDate(departureAirportCode, arrivalAirportCode, LocalDate.parse(departureDate));
+            return flightsDao.getFlightsByAirportsCodeAndDates(lang, departureAirportCode, arrivalAirportCode, LocalDate.parse(departureDate), LocalDate.parse(arrivalDate), limit, offset);
         }
     }
 
 
 
-    public int getFlightsCount (String departureAirportCode, String arrivalAirportCode){
-        return ticketsDao.getTicketsCountByAirportsCode(departureAirportCode, arrivalAirportCode);
+    public int getFlightsCount (String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate) throws SQLException {
+        if (StringUtils.isAnyNullOrEmpty(departureAirportCode, arrivalAirportCode)){
+            throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
+        }
+
+        if (StringUtils.isAnyNullOrEmpty(departureDate, arrivalDate)){
+            return flightsDao.getFlightsCountByAirportsCode(departureAirportCode, arrivalAirportCode);
+        } else {
+            return flightsDao.getFlightsCountByAirportsCodeAndDates(departureAirportCode, arrivalAirportCode, LocalDate.parse(departureDate), LocalDate.parse(arrivalDate));
+        }
     }
 
 

@@ -48,95 +48,106 @@
 <main class="container">
     <%@include file="searchForm.jsp"%>
 
-    <c:if test="${requestScope.flightsData == null and not empty requestScope.departureAirport}">
-        <div class="row">
-            <div class="col">
-                <span class="align-middle">По заданным критериям рейсов не найдено</span>
+    <c:choose>
+        <c:when test="${requestScope.error}">
+            <div class="row">
+                <div class="col">
+                    <span class="align-middle text-danger">${requestScope.errorMessage}</span>
+                </div>
             </div>
-        </div>
-    </c:if>
+        </c:when>
 
-    <c:if test="${requestScope.flightsData != null}">
-        <div class="row">
-            <div class="col">
-                <span class="align-middle">Найдено ${requestScope.flightsTotalCount} <%=getFlightNoun(request.getAttribute("flightsTotalCount").toString())%> </span>
+    <c:otherwise>
+        <c:if test="${requestScope.flightsData == null and not empty requestScope.departureAirport}">
+            <div class="row">
+                <div class="col">
+                    <span class="align-middle">По заданным критериям рейсов не найдено</span>
+                </div>
             </div>
-        </div>
+        </c:if>
 
-        <div class="row">
-            <div class="col" style=" height: 650px; overflow-y: scroll;">
-                <table class="table table-hover table-responsive">
-                    <thead>
-                    <tr>
-                        <th scope="col">Номер рейса</th>
-                        <th scope="col">Расписание вылета</th>
-                        <th scope="col">Расписание прилета</th>
-                        <th scope="col">Актуальное время вылета</th>
-                        <th scope="col">Актуальное время прилета</th>
-                        <th scope="col">Модель самолета</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${requestScope.flightsData}"
-                               var="data">
+        <c:if test="${requestScope.flightsData != null}">
+            <div class="row">
+                <div class="col">
+                    <span class="align-middle">Найдено ${requestScope.flightsTotalCount} <%=getFlightNoun(request.getAttribute("flightsTotalCount").toString())%> </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col" style=" height: 650px; overflow-y: scroll;">
+                    <table class="table table-hover table-responsive">
+                        <thead>
                         <tr>
-                            <td>${data.flight_no}</td>
-                            <fmt:parseDate value="${data.scheduled_departure}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_departure_parsed" type="both" />
-                            <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${scheduled_departure_parsed}" /></td>
-
-                            <fmt:parseDate value="${data.scheduled_arrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_arrival_parsed" type="both" />
-                            <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${scheduled_arrival_parsed}" /></td>
-
-                            <fmt:parseDate value="${data.actual_departure}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_departure_parsed" type="both" />
-                            <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${actual_departure_parsed}" /></td>
-
-                            <fmt:parseDate value="${data.actual_arrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_arrival_parsed" type="both" />
-                            <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${actual_arrival_parsed}" /></td>
-
-                            <td>${data.aircraft_model}</td>
+                            <th scope="col">Номер рейса</th>
+                            <th scope="col">Расписание вылета</th>
+                            <th scope="col">Расписание прилета</th>
+                            <th scope="col">Актуальное время вылета</th>
+                            <th scope="col">Актуальное время прилета</th>
+                            <th scope="col">Модель самолета</th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${requestScope.flightsData}"
+                                   var="data">
+                            <tr>
+                                <td>${data.flight_no}</td>
+                                <fmt:parseDate value="${data.scheduled_departure}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_departure_parsed" type="both" />
+                                <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${scheduled_departure_parsed}" /></td>
+
+                                <fmt:parseDate value="${data.scheduled_arrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_arrival_parsed" type="both" />
+                                <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${scheduled_arrival_parsed}" /></td>
+
+                                <fmt:parseDate value="${data.actual_departure}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_departure_parsed" type="both" />
+                                <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${actual_departure_parsed}" /></td>
+
+                                <fmt:parseDate value="${data.actual_arrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_arrival_parsed" type="both" />
+                                <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${actual_arrival_parsed}" /></td>
+
+                                <td>${data.aircraft_model}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        <div class="row align-items-center">
-            <div class="col d-flex justify-content-end">
-                <ul class="pagination justify-content-right">
-                    <c:choose>
-                        <c:when test="${empty requestScope.pageNo or requestScope.pageNo == 1}">
-                            <li class="page-item disabled"><a class="page-link" href="#">Назад</a></li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="$${contextPath}${queryString}&pageNo=${requestScope.pageNo-1}">Назад</a></li>
-                        </c:otherwise>
-                    </c:choose>
+            <div class="row align-items-center">
+                <div class="col d-flex justify-content-end">
+                    <ul class="pagination justify-content-right">
+                        <c:choose>
+                            <c:when test="${empty requestScope.pageNo or requestScope.pageNo == 1}">
+                                <li class="page-item disabled"><a class="page-link" href="#">Назад</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link" href="$${contextPath}${queryString}&pageNo=${requestScope.pageNo-1}">Назад</a></li>
+                            </c:otherwise>
+                        </c:choose>
 
-                    <li class="page-item">
-                        <span class="page-link"> <c:choose>
-                                <c:when test="${empty requestScope.pageNo or requestScope.pageNo <= 0}"> 1 </c:when>
-                                <c:otherwise>
-                                    ${requestScope.pageNo}
-                                </c:otherwise>
-                            </c:choose>
-                            из ${requestScope.totalPages}
-                        </span>
-                    </li>
+                        <li class="page-item">
+                            <span class="page-link"> <c:choose>
+                                    <c:when test="${empty requestScope.pageNo or requestScope.pageNo <= 0}"> 1 </c:when>
+                                    <c:otherwise>
+                                        ${requestScope.pageNo}
+                                    </c:otherwise>
+                                </c:choose>
+                                из ${requestScope.totalPages}
+                            </span>
+                        </li>
 
-                    <c:choose>
-                        <c:when test="${requestScope.pageNo == requestScope.totalPages}">
-                            <li class="page-item disabled"><a class="page-link" href="#">Вперед</a></li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="${contextPath}${queryString}&pageNo=${requestScope.pageNo+1}">Вперед</a></li>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
+                        <c:choose>
+                            <c:when test="${requestScope.pageNo == requestScope.totalPages}">
+                                <li class="page-item disabled"><a class="page-link" href="#">Вперед</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link" href="${contextPath}${queryString}&pageNo=${requestScope.pageNo+1}">Вперед</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </c:if>
-
+        </c:if>
+    </c:otherwise>
+    </c:choose>
 </main>
 
 </body>

@@ -5,7 +5,14 @@
     <div class="row">
         <div class="col">
             <label for="departureDate" class="sr-only">Дата вылета</label>
-            <input type="date" name="departureDate" id="departureDate" class="form-control input-block" placeholder="Дата вылета" >
+                <c:choose>
+                    <c:when test="${empty requestScope.departureDate}">
+                        <input type="date" name="departureDate" id="departureDate" class="form-control input-block" placeholder="Дата вылета" >
+                    </c:when>
+                    <c:otherwise>
+                        <input type="date" value="${requestScope.departureDate}" name="departureDate" id="departureDate" class="form-control input-block" placeholder="Дата вылета" >
+                    </c:otherwise>
+                </c:choose>
         </div>
 
         <div class="col">
@@ -37,7 +44,14 @@
 
         <div class="col">
             <label for="arrivalDate" class="sr-only">Дата прилета</label>
-            <input type="date" name="arrivalDate" id="arrivalDate" class="form-control input-block" placeholder="Дата вылета">
+            <c:choose>
+                <c:when test="${empty requestScope.departureDate}">
+                    <input type="date" name="arrivalDate" id="arrivalDate" class="form-control input-block" placeholder="Дата вылета">
+                </c:when>
+                <c:otherwise>
+                    <input type="date" value="${requestScope.arrivalDate}" name="arrivalDate" id="arrivalDate" class="form-control input-block" placeholder="Дата вылета" >
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div class="col">

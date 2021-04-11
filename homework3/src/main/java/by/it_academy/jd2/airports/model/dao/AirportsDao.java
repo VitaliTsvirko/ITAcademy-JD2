@@ -26,7 +26,7 @@ public class AirportsDao {
     public AirportsDao() throws PropertyVetoException {
     }
 
-    public List<AirportsData> getAllAirportsData(Lang lang) {
+    public List<AirportsData> getAllAirportsData(Lang lang) throws SQLException {
         List<AirportsData> result = new LinkedList<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name, " +
                         "ml.city ->> ? AS city, ml.coordinates, ml.timezone " +
@@ -57,14 +57,14 @@ public class AirportsDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw  new SQLException("Ошибка работы с базой данных");
         }
 
         return result;
     }
 
 
-    public Map<String, String> getAllAirportsCodeAndName(Lang lang){
+    public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws SQLException {
         Map<String, String> result = new LinkedHashMap<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name " +
                      "FROM bookings.airports_data ml " +
@@ -81,7 +81,7 @@ public class AirportsDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw  new SQLException("Ошибка работы с базой данных");
         }
 
         return result;

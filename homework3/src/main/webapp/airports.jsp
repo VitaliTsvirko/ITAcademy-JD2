@@ -15,31 +15,45 @@
 <%@include file="header.jsp"%>
 
 <main class="container">
-    <table class="table table-hover table-responsive">
-        <thead>
-        <tr>
-            <th scope="col">Код аэропорта</th>
-            <th scope="col">Название аэропорта</th>
-            <th scope="col">Город</th>
-            <th scope="col">Координаты</th>
-            <th scope="col">Часовой пояс</th>
-        </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${requestScope.allAirportsData}"
-                       var="data">
+
+    <c:choose>
+        <c:when test="${requestScope.error}">
+            <div class="row">
+                <div class="col">
+                    <span class="align-middle text-danger">${requestScope.errorMessage}</span>
+                </div>
+            </div>
+        </c:when>
+
+        <c:otherwise>
+            <table class="table table-hover table-responsive">
+                <thead>
                 <tr>
-                    <td>${data.airportCode}</td>
-                    <td>${data.airportName}</td>
-                    <td>${data.city}</td>
-                    <td><a target="_blank" href="http://maps.google.com/maps?q=${data.coordinates.y}, ${data.coordinates.x}">
-                            ${data.coordinates.x}, <br> ${data.coordinates.y}</a>
-                    </td>
-                    <td>${data.timezone}</td>
+                    <th scope="col">Код аэропорта</th>
+                    <th scope="col">Название аэропорта</th>
+                    <th scope="col">Город</th>
+                    <th scope="col">Координаты</th>
+                    <th scope="col">Часовой пояс</th>
                 </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope.allAirportsData}"
+                           var="data">
+                    <tr>
+                        <td>${data.airportCode}</td>
+                        <td>${data.airportName}</td>
+                        <td>${data.city}</td>
+                        <td><a target="_blank" href="http://maps.google.com/maps?q=${data.coordinates.y}, ${data.coordinates.x}">
+                                ${data.coordinates.x}, <br> ${data.coordinates.y}</a>
+                        </td>
+                        <td>${data.timezone}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </c:otherwise>
+    </c:choose>
+
 </main>
 
 </body>

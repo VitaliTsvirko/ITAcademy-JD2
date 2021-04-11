@@ -21,10 +21,13 @@
                   <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}">Аэропорты</a>
                 </li>
                 <li class="nav-item">
-                   <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/search">Поиск билетов</a>
+                   <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/search">Поиск рейсов</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/homework3-airports/search?departureDate=&departureAirport=DME&arrivalDate=&arrivalAirport=ROV">Поиск билетов</a>
+                    <a class="nav-link active" aria-current="page" href="/homework3-airports/search?departureDate=&departureAirport=DME&arrivalDate=&arrivalAirport=ROV">DME to ROV</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/homework3-airports/search?departureDate=2017-04-09&departureAirport=DME&arrivalDate=2017-04-09&arrivalAirport=ROV">DME to ROV on 09.04.2017</a>
                 </li>
             </ul>
 
