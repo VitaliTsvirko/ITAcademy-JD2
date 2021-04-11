@@ -2,8 +2,11 @@ package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.core.utils.StringUtils;
 import by.it_academy.jd2.airports.model.dao.FlightsDao;
+import by.it_academy.jd2.airports.model.dao.api.IFlightsDao;
+import by.it_academy.jd2.airports.model.dto.FlightSearchParam;
 import by.it_academy.jd2.airports.model.dto.Flights;
 import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
@@ -13,9 +16,9 @@ import java.util.List;
 /**
  * Created by Vitali Tsvirko
  */
-public class FlightsSearcherService {
+public class FlightsSearcherService implements IFlightsSearcherService {
     private static volatile FlightsSearcherService instance;
-    private final FlightsDao flightsDao;
+    private final IFlightsDao flightsDao;
 
     private FlightsSearcherService() throws PropertyVetoException {
         flightsDao = new FlightsDao();
@@ -42,33 +45,34 @@ public class FlightsSearcherService {
         return instance;
     }
 
-    public List<Flights> findFlights(Lang lang, String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate, int limit, int pageNo) throws SQLException, IllegalArgumentException {
-        if (StringUtils.isAnyNullOrEmpty(departureAirportCode, arrivalAirportCode)){
+    @Override
+    public List<Flights> findFlights(Lang lang, FlightSearchParam searchParam) throws SQLException, IllegalArgumentException {
+        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureAirport(), searchParam.getArrivalAirport())){
             throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
         }
 
-        int flightsCount = getFlightsCount(departureAirportCode, arrivalAirportCode, departureDate, arrivalDate);
+        int flightsCount = getFlightsCount(searchParam);
 
-        int offset = requestOffsetCalc(flightsCount, limit, pageNo);
+        int offset = requestOffsetCalc(flightsCount, searchParam.getPageItemLimit(), searchParam.getPageNo());
 
-        if (StringUtils.isAnyNullOrEmpty(departureDate, arrivalDate)){
-            return flightsDao.getFlightsByAirportsCode(lang, departureAirportCode, arrivalAirportCode, limit, offset);
+        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
+            return flightsDao.getFlightsByAirportsCode(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), searchParam.getPageItemLimit(), offset);
         } else {
-            return flightsDao.getFlightsByAirportsCodeAndDates(lang, departureAirportCode, arrivalAirportCode, LocalDate.parse(departureDate), LocalDate.parse(arrivalDate), limit, offset);
+            return flightsDao.getFlightsByAirportsCodeAndDates(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), LocalDate.parse(searchParam.getDepartureDate()), LocalDate.parse(searchParam.getDepartureDate()), searchParam.getPageItemLimit(), offset);
         }
     }
 
 
-
-    public int getFlightsCount (String departureAirportCode, String arrivalAirportCode, String departureDate, String arrivalDate) throws SQLException {
-        if (StringUtils.isAnyNullOrEmpty(departureAirportCode, arrivalAirportCode)){
+    @Override
+    public int getFlightsCount (FlightSearchParam searchParam) throws SQLException {
+        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureAirport(), searchParam.getArrivalAirport())){
             throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
         }
 
-        if (StringUtils.isAnyNullOrEmpty(departureDate, arrivalDate)){
-            return flightsDao.getFlightsCountByAirportsCode(departureAirportCode, arrivalAirportCode);
+        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
+            return flightsDao.getFlightsCountByAirportsCode(searchParam.getDepartureAirport(), searchParam.getArrivalAirport());
         } else {
-            return flightsDao.getFlightsCountByAirportsCodeAndDates(departureAirportCode, arrivalAirportCode, LocalDate.parse(departureDate), LocalDate.parse(arrivalDate));
+            return flightsDao.getFlightsCountByAirportsCodeAndDates(searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), LocalDate.parse(searchParam.getDepartureDate()), LocalDate.parse(searchParam.getDepartureDate()));
         }
     }
 

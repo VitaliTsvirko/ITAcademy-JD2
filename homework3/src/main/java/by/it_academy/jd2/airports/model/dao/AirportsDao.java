@@ -1,5 +1,6 @@
 package by.it_academy.jd2.airports.model.dao;
 
+import by.it_academy.jd2.airports.model.dao.api.IAirportsDao;
 import by.it_academy.jd2.airports.model.dao.core.ConnectionPoolCreator;
 import by.it_academy.jd2.airports.model.dto.AirportsData;
 import by.it_academy.jd2.airports.model.dto.Lang;
@@ -20,12 +21,13 @@ import java.util.Map;
 /**
  * Created by Vitali Tsvirko
  */
-public class AirportsDao {
+public class AirportsDao implements IAirportsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
 
     public AirportsDao() throws PropertyVetoException {
     }
 
+    @Override
     public List<AirportsData> getAllAirportsData(Lang lang) throws SQLException {
         List<AirportsData> result = new LinkedList<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name, " +
@@ -63,7 +65,7 @@ public class AirportsDao {
         return result;
     }
 
-
+    @Override
     public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws SQLException {
         Map<String, String> result = new LinkedHashMap<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name " +
@@ -86,16 +88,4 @@ public class AirportsDao {
 
         return result;
     }
-
-
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, PropertyVetoException {
-        AirportsDao airportDao = new AirportsDao();
-
-        List<AirportsData> airportsData = airportDao.getAllAirportsData(Lang.RU);
-        Map<String, String> airportsMap = airportDao.getAllAirportsCodeAndName(Lang.RU);
-
-        System.out.println(airportsData.size());
-        System.out.println(airportsMap.size());
-    }
-
 }

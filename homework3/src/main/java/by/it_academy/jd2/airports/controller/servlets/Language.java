@@ -18,7 +18,6 @@ public class Language extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String lang = req.getParameter("lang");
-        String pageUrl = req.getParameter("pageURL");
 
         if (lang != null){
             if (lang.equalsIgnoreCase(Lang.EN.getTextCode())){
@@ -28,6 +27,6 @@ public class Language extends HttpServlet {
             }
         }
 
-        resp.sendRedirect(pageUrl);
+        resp.sendRedirect(req.getContextPath() + "/airports");
     }
 }

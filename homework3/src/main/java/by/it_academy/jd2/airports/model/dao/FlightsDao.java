@@ -1,5 +1,6 @@
 package by.it_academy.jd2.airports.model.dao;
 
+import by.it_academy.jd2.airports.model.dao.api.IFlightsDao;
 import by.it_academy.jd2.airports.model.dao.core.ConnectionPoolCreator;
 import by.it_academy.jd2.airports.model.dto.Flights;
 import by.it_academy.jd2.airports.model.dto.Lang;
@@ -16,12 +17,13 @@ import java.util.List;
 /**
  * Created by Vitali Tsvirko
  */
-public class FlightsDao {
+public class FlightsDao implements IFlightsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
 
     public FlightsDao() throws PropertyVetoException {
     }
 
+    @Override
     public int getFlightsCountByAirportsCode(String departureAirportCode, String arrivalAirportCode) throws SQLException {
         int result = 0;
         String sql = "SELECT count(*) FROM flights WHERE departure_airport=? AND arrival_airport=?";
@@ -43,7 +45,7 @@ public class FlightsDao {
         return result;
     }
 
-
+    @Override
     public int getFlightsCountByAirportsCodeAndDates(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate) throws SQLException {
         int result = 0;
         String sql = " SELECT count(*)" +
@@ -72,7 +74,7 @@ public class FlightsDao {
         return result;
     }
 
-
+    @Override
     public List<Flights> getFlightsByAirportsCodeAndDates(Lang lang, String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate, int limit, int offset) throws SQLException {
         List<Flights> result = new ArrayList<>();
         String sql = " SELECT f.flight_no," +
@@ -122,7 +124,7 @@ public class FlightsDao {
         return result;
     }
 
-
+    @Override
     public List<Flights> getFlightsByAirportsCode(Lang lang, String departureAirportCode, String arrivalAirportCode, int limit, int offset) throws SQLException {
         List<Flights> result = new ArrayList<>();
         String sql = "SELECT f.flight_no," +

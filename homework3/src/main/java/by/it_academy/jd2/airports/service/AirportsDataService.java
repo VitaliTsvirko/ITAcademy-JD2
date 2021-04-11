@@ -2,8 +2,10 @@ package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.model.dao.AirportsDao;
 import by.it_academy.jd2.airports.model.dao.FlightsDao;
+import by.it_academy.jd2.airports.model.dao.api.IAirportsDao;
 import by.it_academy.jd2.airports.model.dto.AirportsData;
 import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.service.api.IAirportsDataService;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
@@ -13,14 +15,12 @@ import java.util.Map;
 /**
  * Created by Vitali Tsvirko
  */
-public class AirportsDataService {
+public class AirportsDataService implements IAirportsDataService {
     private static volatile AirportsDataService instance;
-    private final AirportsDao airportDao;
-    private final FlightsDao ticketsDao;
+    private final IAirportsDao airportDao;
 
     private AirportsDataService() throws PropertyVetoException {
         airportDao = new AirportsDao();
-        ticketsDao = new FlightsDao();
     }
 
     /**
@@ -44,11 +44,12 @@ public class AirportsDataService {
         return instance;
     }
 
+    @Override
     public List<AirportsData> getAllAirportsData(Lang lang) throws ClassNotFoundException, SQLException, PropertyVetoException {
         return airportDao.getAllAirportsData(lang);
     }
 
-
+    @Override
     public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws ClassNotFoundException, SQLException, PropertyVetoException {
         return airportDao.getAllAirportsCodeAndName(lang);
     }

@@ -2,6 +2,7 @@ package by.it_academy.jd2.airports.controller.servlets;
 
 import by.it_academy.jd2.airports.model.dto.Lang;
 import by.it_academy.jd2.airports.service.AirportsDataService;
+import by.it_academy.jd2.airports.service.api.IAirportsDataService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
  * Created by Vitali Tsvirko
  */
 public class AirportsData extends HttpServlet {
-    private final AirportsDataService airportsDataService = AirportsDataService.getInstance();
+    private final IAirportsDataService airportsDataService = AirportsDataService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

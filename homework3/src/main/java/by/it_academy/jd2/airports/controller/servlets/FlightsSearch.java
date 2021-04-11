@@ -1,9 +1,12 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
+import by.it_academy.jd2.airports.model.dto.FlightSearchParam;
 import by.it_academy.jd2.airports.model.dto.Flights;
 import by.it_academy.jd2.airports.model.dto.Lang;
 import by.it_academy.jd2.airports.service.AirportsDataService;
 import by.it_academy.jd2.airports.service.FlightsSearcherService;
+import by.it_academy.jd2.airports.service.api.IAirportsDataService;
+import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,10 +24,9 @@ import java.util.Map;
  */
 @WebServlet(urlPatterns = "/search")
 public class FlightsSearch extends HttpServlet {
-    private final FlightsSearcherService flightsSearcherService = FlightsSearcherService.getInstance();
-    private final AirportsDataService airportsDataService = AirportsDataService.getInstance();
+    private final IFlightsSearcherService flightsSearcherService = FlightsSearcherService.getInstance();
+    private final IAirportsDataService airportsDataService = AirportsDataService.getInstance();
     private Map<String, String> airportsMap;
-    private final int ITEMS_PER_PAGE = 25;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,7 +38,7 @@ public class FlightsSearch extends HttpServlet {
 
             //some filter select
             if (req.getQueryString() != null){
-                filerHandler(req, lang);
+                filterHandler(req, lang);
             }
         } catch (IllegalArgumentException e){
             req.setAttribute("error", true);
@@ -50,30 +52,32 @@ public class FlightsSearch extends HttpServlet {
     }
 
 
-    private void filerHandler(HttpServletRequest req, Lang lang) throws SQLException {
-        String departureDate = req.getParameter("departureDate");
-        String departureAirport = req.getParameter("departureAirport");
-        String arrivalDate = req.getParameter("arrivalDate");
-        String arrivalAirport = req.getParameter("arrivalAirport");
-        String pageNo = req.getParameter("pageNo");
+    private void filterHandler(HttpServletRequest req, Lang lang) throws SQLException {
+        FlightSearchParam searchParam = new FlightSearchParam();
 
-        int flightsTotalCount = flightsSearcherService.getFlightsCount(departureAirport, arrivalAirport, departureDate, arrivalDate);
+        searchParam.setDepartureDate(req.getParameter("departureDate"));
+        searchParam.setDepartureAirport(req.getParameter("departureAirport"));
+        searchParam.setArrivalDate(req.getParameter("arrivalDate"));
+        searchParam.setArrivalAirport(req.getParameter("arrivalAirport"));
+        searchParam.setPageNo(req.getParameter("pageNo"));
+        searchParam.setPageItemLimit(25);
+
+        int flightsTotalCount = flightsSearcherService.getFlightsCount(searchParam);
 
         if(flightsTotalCount > 0){
-            int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / ITEMS_PER_PAGE);
-            int requestPageNo = (pageNo != null) ? Math.min(Integer.parseInt(pageNo), totalPages) : 1;
+            int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / searchParam.getPageItemLimit());
 
-            List<Flights> flights = flightsSearcherService.findFlights(lang, departureAirport, arrivalAirport, departureDate, arrivalDate, ITEMS_PER_PAGE, requestPageNo);
+            if (searchParam.getPageNo() > totalPages){
+                searchParam.setPageNo(totalPages);
+            }
+
+            List<Flights> flights = flightsSearcherService.findFlights(lang, searchParam);
             req.setAttribute("flightsData", flights);
 
             req.setAttribute("totalPages", totalPages);
-            req.setAttribute("pageNo", requestPageNo);
         }
 
-        req.setAttribute("departureDate", departureDate);
-        req.setAttribute("departureAirport", departureAirport);
-        req.setAttribute("arrivalDate", arrivalDate);
-        req.setAttribute("arrivalAirport", arrivalAirport);
+        req.setAttribute("searchParam", searchParam);
         req.setAttribute("flightsTotalCount", flightsTotalCount);
     }
 

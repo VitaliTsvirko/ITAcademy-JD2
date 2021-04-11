@@ -1,7 +1,3 @@
-
-
-https://mdbootstrap.com/docs/b4/jquery/tables/sort/
-
 1.	Используя https://postgrespro.ru/education/demodb развернуть big базу
 2.	Создать страницу /airports отображающую список аэропортов с сортировкой по по городу.
     Нужно отобразить всю информацию об аэропорте
@@ -15,9 +11,7 @@ https://mdbootstrap.com/docs/b4/jquery/tables/sort/
 5.	На странице с рейсами должно отображаться не более 25 записей если записей больше
     предлагать открыть следующую страницу
 
+TODO
+    При смене языка редирект на исходную страницу с параметрами
 
-    https://www.javatpoint.com/pagination-in-jsp
-    https://zetcode.com/javaservlet/pagination/
 
-    TODO
-    Обновлять List c результатми?
