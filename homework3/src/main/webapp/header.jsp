@@ -23,6 +23,9 @@
                 <li class="nav-item">
                    <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/search">Поиск билетов</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/homework3-airports/search?departureDate=&departureAirport=DME&arrivalDate=&arrivalAirport=ROV">Поиск билетов</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">

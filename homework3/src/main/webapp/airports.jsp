@@ -11,7 +11,7 @@
     <c:set var="contextPath" value="${pageContext.request.contextPath}/"/>
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
 <%@include file="header.jsp"%>
 
 <main class="container">
@@ -42,7 +42,6 @@
     </table>
 </main>
 
-<%@include file="footer.jsp"%>
 </body>
 
 </html>
