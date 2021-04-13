@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Vitali Tsvirko
+ * @author Vitali Tsvirko
  */
 public class FlightsDao implements IFlightsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();

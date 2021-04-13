@@ -1,3 +1,4 @@
+<%@ page import="by.it_academy.jd2.airports.model.dto.FlightsPageParam" %>
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -40,7 +41,7 @@
         </div>
     </c:if>
 
-    <c:if test="${requestScope.flightsData == null and not empty requestScope.searchParam.departureAirport}">
+    <c:if test="${requestScope.flightsData == null and requestScope.pageParam != null}">
         <div class="row">
             <div class="col">
                 <span class="align-middle">По заданным критериям рейсов не найдено</span>
@@ -51,7 +52,7 @@
     <c:if test="${requestScope.flightsData != null}">
         <div class="row">
             <div class="col">
-                <span class="align-middle">Найдено ${requestScope.flightsTotalCount} <%=getFlightNoun(request.getAttribute("flightsTotalCount").toString())%> </span>
+                <span class="align-middle">Найдено ${requestScope.pageParam.flightsTotalCount} <%=getFlightNoun(((FlightsPageParam) request.getAttribute("pageParam")).getFlightsTotalCount().toString())%> </span>
             </div>
         </div>
 
@@ -97,34 +98,31 @@
             <div class="col d-flex justify-content-end">
                 <ul class="pagination justify-content-right">
                     <c:choose>
-                        <c:when test="${requestScope.searchParam.pageNo == 1}">
+                        <c:when test="${requestScope.pageParam.pageNo == 1}">
                             <li class="page-item disabled"><a class="page-link" href="#">Назад</a></li>
                         </c:when>
                         <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/search?${requestScope.searchParam.toString()}&pageNo=${requestScope.searchParam.pageNo-1}">Назад</a></li>
+                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/search?${requestScope.queryString}&pageNo=${requestScope.pageParam.pageNo-1}">Назад</a></li>
                         </c:otherwise>
                     </c:choose>
 
                     <li class="page-item">
-                        <span class="page-link">  ${requestScope.searchParam.pageNo} из ${requestScope.totalPages} </span>
+                        <span class="page-link">  ${requestScope.pageParam.pageNo} из ${requestScope.pageParam.totalPages} </span>
                     </li>
 
                     <c:choose>
-                        <c:when test="${requestScope.searchParam.pageNo >= requestScope.totalPages}">
+                        <c:when test="${requestScope.pageParam.pageNo >= requestScope.pageParam.totalPages}">
                             <li class="page-item disabled"><a class="page-link" href="#">Вперед</a></li>
                         </c:when>
                         <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/search?${requestScope.searchParam.toString()}&pageNo=${requestScope.searchParam.pageNo+1}">Вперед</a></li>
+                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/search?${requestScope.queryString}&pageNo=${requestScope.pageParam.pageNo+1}">Вперед</a></li>
                         </c:otherwise>
                     </c:choose>
-
                 </ul>
             </div>
         </div>
     </c:if>
-
 </main>
 
 </body>
-
 </html>

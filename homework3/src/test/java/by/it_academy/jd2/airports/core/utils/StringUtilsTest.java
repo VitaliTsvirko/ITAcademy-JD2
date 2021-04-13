@@ -23,4 +23,29 @@ class StringUtilsTest {
         assertFalse(StringUtils.isAnyNullOrEmpty(" ", " "));
         assertFalse(StringUtils.isAnyNullOrEmpty("value", "value"));
     }
+
+
+    @Test
+    void isAllNotNullOrEmpty() {
+        assertFalse(StringUtils.isAllNotNullOrEmpty(null, null));
+        assertFalse(StringUtils.isAllNotNullOrEmpty("", ""));
+        assertFalse(StringUtils.isAllNotNullOrEmpty("", null));
+        assertFalse(StringUtils.isAllNotNullOrEmpty(" ", null));
+        assertFalse(StringUtils.isAllNotNullOrEmpty("value", null));
+        assertFalse(StringUtils.isAllNotNullOrEmpty(null, "value"));
+        assertTrue(StringUtils.isAllNotNullOrEmpty(" ", " "));
+        assertTrue(StringUtils.isAllNotNullOrEmpty("value", "value"));
+    }
+
+    @Test
+    void isAllNullOrEmpty() {
+        assertTrue(StringUtils.isAllNullOrEmpty(null, null));
+        assertTrue(StringUtils.isAllNullOrEmpty("", ""));
+        assertTrue(StringUtils.isAllNullOrEmpty("", null));
+        assertFalse(StringUtils.isAllNullOrEmpty(" ", null));
+        assertFalse(StringUtils.isAllNullOrEmpty("value", null));
+        assertFalse(StringUtils.isAllNullOrEmpty(null, "value"));
+        assertFalse(StringUtils.isAllNullOrEmpty(" ", " "));
+        assertFalse(StringUtils.isAllNullOrEmpty("value", "value"));
+    }
 }

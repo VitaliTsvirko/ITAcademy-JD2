@@ -2,6 +2,7 @@ package by.it_academy.jd2.airports.controller.servlets;
 
 import by.it_academy.jd2.airports.model.dto.FlightSearchParam;
 import by.it_academy.jd2.airports.model.dto.Flights;
+import by.it_academy.jd2.airports.model.dto.FlightsPageParam;
 import by.it_academy.jd2.airports.model.dto.Lang;
 import by.it_academy.jd2.airports.service.AirportsDataService;
 import by.it_academy.jd2.airports.service.FlightsSearcherService;
@@ -31,6 +32,13 @@ public class FlightsSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Lang lang = (Lang) req.getSession().getAttribute("lang");
+        FlightSearchParam searchParam = new FlightSearchParam();
+
+        searchParam.setDepartureDate(req.getParameter("departureDate"));
+        searchParam.setDepartureAirport(req.getParameter("departureAirport"));
+        searchParam.setArrivalDate(req.getParameter("arrivalDate"));
+        searchParam.setArrivalAirport(req.getParameter("arrivalAirport"));
+        searchParam.setQueryPageNo(req.getParameter("pageNo"));
 
         try{
             this.airportsMap = airportsDataService.getAllAirportsCodeAndName(lang);
@@ -38,7 +46,16 @@ public class FlightsSearch extends HttpServlet {
 
             //some filter select
             if (req.getQueryString() != null){
-                filterHandler(req, lang);
+                FlightsPageParam pageParam = new FlightsPageParam();
+                pageParam.setPageItemLimit(25);
+
+                List<Flights> flights = flightsSearcherService.findFlights(lang, searchParam, pageParam);
+
+                req.setAttribute("pageParam", pageParam);
+                req.setAttribute("flightsData", flights);
+
+                String queryString = req.getQueryString().replace("&pageNo="+pageParam.getPageNo(), "");
+                req.setAttribute("queryString", queryString);
             }
         } catch (IllegalArgumentException e){
             req.setAttribute("error", true);
@@ -48,37 +65,7 @@ public class FlightsSearch extends HttpServlet {
             req.setAttribute("errorMessage", "Ошибка работы с базой данных. Попробуйте повторить запрос позже...");
         }
 
+        req.setAttribute("searchParam", searchParam);
         req.getRequestDispatcher("flightsSearch.jsp").forward(req, resp);
     }
-
-
-    private void filterHandler(HttpServletRequest req, Lang lang) throws SQLException {
-        FlightSearchParam searchParam = new FlightSearchParam();
-
-        searchParam.setDepartureDate(req.getParameter("departureDate"));
-        searchParam.setDepartureAirport(req.getParameter("departureAirport"));
-        searchParam.setArrivalDate(req.getParameter("arrivalDate"));
-        searchParam.setArrivalAirport(req.getParameter("arrivalAirport"));
-        searchParam.setPageNo(req.getParameter("pageNo"));
-        searchParam.setPageItemLimit(25);
-
-        int flightsTotalCount = flightsSearcherService.getFlightsCount(searchParam);
-
-        if(flightsTotalCount > 0){
-            int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / searchParam.getPageItemLimit());
-
-            if (searchParam.getPageNo() > totalPages){
-                searchParam.setPageNo(totalPages);
-            }
-
-            List<Flights> flights = flightsSearcherService.findFlights(lang, searchParam);
-            req.setAttribute("flightsData", flights);
-
-            req.setAttribute("totalPages", totalPages);
-        }
-
-        req.setAttribute("searchParam", searchParam);
-        req.setAttribute("flightsTotalCount", flightsTotalCount);
-    }
-
 }

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Created by Vitali Tsvirko
+ * @author Vitali Tsvirko
  */
 public class LanguageFilter implements Filter {
     @Override

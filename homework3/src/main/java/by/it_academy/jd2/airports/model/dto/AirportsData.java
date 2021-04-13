@@ -4,17 +4,35 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный класс переназначен для хранения данных о аэропортах
+ *
+ * @author Vitali Tsvirko
  */
 public class AirportsData implements Serializable {
+    /**
+     * Код аэропорта
+     */
     private String airportCode;
-    private String airportName;
-    private String city;
-    private Point2D coordinates;
-    private String timezone;
 
-    public AirportsData() {
-    }
+    /**
+     * Название аэропорта
+     */
+    private String airportName;
+
+    /**
+     * Город
+     */
+    private String city;
+
+    /**
+     * Координаты
+     */
+    private Point2D coordinates;
+
+    /**
+     * Часовой пояс
+     */
+    private String timezone;
 
     public String getAirportCode() {
         return airportCode;

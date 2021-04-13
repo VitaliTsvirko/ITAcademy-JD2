@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Vitali Tsvirko
+ * @author Vitali Tsvirko
  */
 public class AirportsDao implements IAirportsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();

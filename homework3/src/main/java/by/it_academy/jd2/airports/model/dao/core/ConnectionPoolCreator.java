@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 
 /**
- * Created by Vitali Tsvirko
+ * @author Vitali Tsvirko
  */
 public class ConnectionPoolCreator {
     private static volatile ConnectionPoolCreator instance;

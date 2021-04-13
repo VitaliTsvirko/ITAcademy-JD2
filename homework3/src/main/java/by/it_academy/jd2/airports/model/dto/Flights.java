@@ -4,17 +4,44 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный класс переназначен для хранения результат поиска рейсов
+ *
+ * @author Vitali Tsvirko
  */
 public class Flights implements Serializable {
+    /**
+     * Номер рейса
+     */
     private String flight_no;
-    private OffsetDateTime scheduled_departure;
-    private OffsetDateTime scheduled_arrival;
-    private OffsetDateTime actual_departure;
-    private OffsetDateTime actual_arrival;
-    private String aircraft_model;
-    private OffsetDateTime ts;
 
+    /**
+     * Расписание вылета
+     */
+    private OffsetDateTime scheduled_departure;
+
+    /**
+     * Расписание прилета
+     */
+    private OffsetDateTime scheduled_arrival;
+
+    /**
+     * Актуальное время вылета
+     */
+    private OffsetDateTime actual_departure;
+
+    /**
+     * Актуальное время прилета
+     */
+    private OffsetDateTime actual_arrival;
+
+    /**
+     * Модель самолета
+     */
+    private String aircraft_model;
+
+    /**
+     *
+     */
 
     public String getFlight_no() {
         return flight_no;
@@ -62,5 +89,17 @@ public class Flights implements Serializable {
 
     public void setAircraft_model(String aircraft_model) {
         this.aircraft_model = aircraft_model;
+    }
+
+    @Override
+    public String toString() {
+        return "Flights{" +
+                "flight_no='" + flight_no + '\'' +
+                ", scheduled_departure=" + scheduled_departure +
+                ", scheduled_arrival=" + scheduled_arrival +
+                ", actual_departure=" + actual_departure +
+                ", actual_arrival=" + actual_arrival +
+                ", aircraft_model='" + aircraft_model + '\'' +
+                '}';
     }
 }

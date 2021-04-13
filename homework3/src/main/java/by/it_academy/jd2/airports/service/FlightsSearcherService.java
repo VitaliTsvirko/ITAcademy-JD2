@@ -3,9 +3,7 @@ package by.it_academy.jd2.airports.service;
 import by.it_academy.jd2.airports.core.utils.StringUtils;
 import by.it_academy.jd2.airports.model.dao.FlightsDao;
 import by.it_academy.jd2.airports.model.dao.api.IFlightsDao;
-import by.it_academy.jd2.airports.model.dto.FlightSearchParam;
-import by.it_academy.jd2.airports.model.dto.Flights;
-import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.model.dto.*;
 import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 
 import java.beans.PropertyVetoException;
@@ -14,7 +12,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный класс является сервисом и предназначен для получения информации о рейсах
+ * <p>Выполняет поиск по заданным параметрам переданным в переменной {@code FlightSearchParam searchParam}
+ * Параметры вывода передаются в переменной {@code FlightsPageParam pageParam}
+ * </p>
+ *
+ * @author Vitali Tsvirko
+ * @see FlightSearchParam
+ * @see FlightsPageParam
  */
 public class FlightsSearcherService implements IFlightsSearcherService {
     private static volatile FlightsSearcherService instance;
@@ -26,9 +31,9 @@ public class FlightsSearcherService implements IFlightsSearcherService {
 
     /**
      * Данный метод метод предназначен для создания и возвращения объекта
-     * <p>Если объект еще не создан, то создаться новый объект {@code UserService} и возвращается</p>
+     * <p>Если объект еще не создан, то создаться новый объект {@code FlightsSearcherService} и возвращается</p>
      * <p>Если объект был создан ранее, то он и возвращается</p>
-     * @return возвращает объект {@code UserService}
+     * @return возвращает объект {@code FlightsSearcherService}
      */
     public static FlightsSearcherService getInstance() {
         if (instance == null) {
@@ -45,29 +50,58 @@ public class FlightsSearcherService implements IFlightsSearcherService {
         return instance;
     }
 
+    /**
+     * Данный метод выполняет поиск рейсов по заданным параметрам переданным в переменной {@code FlightSearchParam searchParam}
+     *  * Параметры вывода передаются в переменной {@code FlightsPageParam pageParam}
+     * @param lang язык на котором возвращаются названия
+     * @param searchParam параметры поиска
+     * @param pageParam параметры вывода данных на страницу
+     * @return список рейсов {@code Flights} соответствущий заданных параметрам.
+     *          Если ничего не найдено вернет {@code null}
+     * @throws SQLException если произошла ошибка работы с базой
+     * @throws IllegalArgumentException если переданы неверные параметры поиска
+     * @see FlightSearchParam
+     * @see FlightsPageParam
+     */
     @Override
-    public List<Flights> findFlights(Lang lang, FlightSearchParam searchParam) throws SQLException, IllegalArgumentException {
-        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureAirport(), searchParam.getArrivalAirport())){
-            throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
+    public List<Flights> findFlights(Lang lang, FlightSearchParam searchParam, FlightsPageParam pageParam) throws SQLException, IllegalArgumentException {
+        validateSearchParam(searchParam);
+
+        int flightsTotalCount = getFlightsCount(searchParam);
+        pageParam.setFlightsTotalCount(flightsTotalCount);
+
+        if (flightsTotalCount > 0){
+            int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / pageParam.getPageItemLimit());
+            int pageNo = validatePageNo(searchParam.getQueryPageNo(), totalPages);
+            int offset = requestOffsetCalc(flightsTotalCount, pageParam.getPageItemLimit(), pageNo);
+
+            pageParam.setFlightsTotalCount(flightsTotalCount);
+            pageParam.setTotalPages(totalPages);
+            pageParam.setPageNo(pageNo);
+
+            if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
+                return flightsDao.getFlightsByAirportsCode(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), pageParam.getPageItemLimit(), offset);
+            } else {
+                return flightsDao.getFlightsByAirportsCodeAndDates(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), LocalDate.parse(searchParam.getDepartureDate()), LocalDate.parse(searchParam.getDepartureDate()), pageParam.getPageItemLimit(), offset);
+            }
         }
 
-        int flightsCount = getFlightsCount(searchParam);
-
-        int offset = requestOffsetCalc(flightsCount, searchParam.getPageItemLimit(), searchParam.getPageNo());
-
-        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
-            return flightsDao.getFlightsByAirportsCode(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), searchParam.getPageItemLimit(), offset);
-        } else {
-            return flightsDao.getFlightsByAirportsCodeAndDates(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), LocalDate.parse(searchParam.getDepartureDate()), LocalDate.parse(searchParam.getDepartureDate()), searchParam.getPageItemLimit(), offset);
-        }
+        return null;
     }
 
 
+    /**
+     * Данный метод предназначен для определения количества рейсов по заданным параметрам.
+     *
+     * @param searchParam параметры поиска
+     * @return количество рейсов соответствующих критериям поиска.
+     *         если ничего не найдено вернет ноль
+     * @throws SQLException если произошла ошибка работы с базой данных
+     * @see FlightSearchParam
+     */
     @Override
     public int getFlightsCount (FlightSearchParam searchParam) throws SQLException {
-        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureAirport(), searchParam.getArrivalAirport())){
-            throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
-        }
+        validateSearchParam(searchParam);
 
         if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
             return flightsDao.getFlightsCountByAirportsCode(searchParam.getDepartureAirport(), searchParam.getArrivalAirport());
@@ -76,6 +110,42 @@ public class FlightsSearcherService implements IFlightsSearcherService {
         }
     }
 
+
+    /**
+     * Данный метод выполняет проверку параметров поиска.
+     *
+     * @param searchParam параметры поиска
+     * @throws IllegalArgumentException если есть ошибка в параметрах заданных поиска
+     */
+    private void validateSearchParam(FlightSearchParam searchParam) throws IllegalArgumentException{
+        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureAirport(), searchParam.getArrivalAirport())){
+            throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
+        }
+
+        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
+            if (StringUtils.isAnyNotNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
+                throw new IllegalArgumentException("Заполните поля Дата вылета и Дата прилета, или выполните поиск без дат");
+            }
+        }
+    }
+
+
+    /**
+     * Данный метод выполняет проверку правильности номера страницы
+     * @param requestPageNo номер страницы переданный в запросе
+     * @param totalPages общее количество страницы
+     * @return корректный номер страницы
+     */
+    private Integer validatePageNo(String requestPageNo, int totalPages) {
+        int result = 1;
+
+        if (requestPageNo != null) {
+            int tmp = Integer.parseInt(requestPageNo);
+            result = (tmp <= 0) ? 1 : tmp;
+        }
+
+        return Math.min(result, totalPages);
+    }
 
     /**
      * Данный метод выполняет расчет смещения записей исходя из общего количества рейсов,

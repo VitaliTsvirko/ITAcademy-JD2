@@ -3,42 +3,36 @@ package by.it_academy.jd2.airports.model.dto;
 import java.io.Serializable;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный класс переназначен для хранения параметров поиска рейсов
+ *
+ * @author Vitali Tsvirko
  */
 public class FlightSearchParam implements Serializable {
+    /**
+     * Аэропорт вылета
+     */
     private String departureAirport;
+
+    /**
+     * Аэропорт прилета
+     */
     private String arrivalAirport;
+
+    /**
+     * Дата вылета
+     */
     private String departureDate;
+
+    /**
+     * Дата прилета
+     */
     private String arrivalDate;
-    private Integer pageNo;
-    private Integer pageItemLimit;
 
-    public Integer getPageItemLimit() {
-        return pageItemLimit;
-    }
+    /**
+     * Номер страницы переданных в GET запросе
+     */
+    private String queryPageNo;
 
-    public void setPageItemLimit(Integer pageItemLimit) {
-        this.pageItemLimit = pageItemLimit;
-    }
-
-    public Integer getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(String pageNo) {
-       if (pageNo != null){
-           this.pageNo = Integer.parseInt(pageNo);
-           if (this.pageNo <= 0){
-               this.pageNo = 1;
-           }
-       } else {
-           this.pageNo = 1;
-       }
-    }
-
-    public void setPageNo(Integer pageNo) {
-        this.pageNo = pageNo;
-    }
 
     public String getDepartureAirport() {
         return departureAirport;
@@ -72,23 +66,22 @@ public class FlightSearchParam implements Serializable {
         this.arrivalDate = arrivalDate;
     }
 
+    public String getQueryPageNo() {
+        return queryPageNo;
+    }
+
+    public void setQueryPageNo(String queryPageNo) {
+        this.queryPageNo = queryPageNo;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        if (departureAirport != null){
-            sb.append("&departureAirport=").append(departureAirport);
-        }
-        if (arrivalAirport != null){
-            sb.append("&arrivalAirport=").append(arrivalAirport);
-        }
-        if (departureDate != null){
-            sb.append("&departureDate=").append(departureDate);
-        }
-        if (arrivalDate != null){
-            sb.append("&arrivalDate=").append(arrivalDate);
-        }
-
-        return  sb.toString();
+        return "FlightSearchParam{" +
+                "departureAirport='" + departureAirport + '\'' +
+                ", arrivalAirport='" + arrivalAirport + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                ", arrivalDate='" + arrivalDate + '\'' +
+                ", queryPageNo='" + queryPageNo + '\'' +
+                '}';
     }
 }

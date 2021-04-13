@@ -18,11 +18,10 @@
         <div class="starter-template text-center py-5 px-3">
             <p style="font-size: 32px">Упс!!!!</p>
             <p style="font-size: 20px">Ошибка 404 - Запрашиваемая страница не найдена</p>
-            <p class="login-callout mt-3"> Перейти <a href="${pageContext.request.contextPath}/chat">на главную страницу</a> </p>
+            <p class="login-callout mt-3"> Перейти <a href="${pageContext.request.contextPath}">на главную страницу</a> </p>
         </div>
 
     </main>
 
-    <%@include file="footer.jsp"%>
 </body>
 </html>

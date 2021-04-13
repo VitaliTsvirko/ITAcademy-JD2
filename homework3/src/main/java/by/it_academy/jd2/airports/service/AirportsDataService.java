@@ -1,7 +1,6 @@
 package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.model.dao.AirportsDao;
-import by.it_academy.jd2.airports.model.dao.FlightsDao;
 import by.it_academy.jd2.airports.model.dao.api.IAirportsDao;
 import by.it_academy.jd2.airports.model.dto.AirportsData;
 import by.it_academy.jd2.airports.model.dto.Lang;
@@ -13,7 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Vitali Tsvirko
+ * Данный класс является сервисом и предназначен для получения информации об аэропортах
+ *
+ * @author Vitali Tsvirko
+ * @see AirportsData
+ * @see AirportsDao
  */
 public class AirportsDataService implements IAirportsDataService {
     private static volatile AirportsDataService instance;
@@ -25,9 +28,9 @@ public class AirportsDataService implements IAirportsDataService {
 
     /**
      * Данный метод метод предназначен для создания и возвращения объекта
-     * <p>Если объект еще не создан, то создаться новый объект {@code UserService} и возвращается</p>
+     * <p>Если объект еще не создан, то создаться новый объект {@code AirportsDataService} и возвращается</p>
      * <p>Если объект был создан ранее, то он и возвращается</p>
-     * @return возвращает объект {@code UserService}
+     * @return возвращает объект {@code AirportsDataService}
      */
     public static AirportsDataService getInstance() {
         if (instance == null) {
@@ -44,11 +47,27 @@ public class AirportsDataService implements IAirportsDataService {
         return instance;
     }
 
+    /**
+     * Данный метод предназначен для получения списка всех аэропортов
+     * @param lang язык на котором возвращаются названия аэропорта и города
+     * @return список всех аэропортов
+     * @throws ClassNotFoundException если произошла ошибка в драйвере работы с базой
+     * @throws SQLException если произошла ошибка работы с базой
+     * @throws PropertyVetoException если произошла ошибка работы с сервисом подключения к базе
+     */
     @Override
     public List<AirportsData> getAllAirportsData(Lang lang) throws ClassNotFoundException, SQLException, PropertyVetoException {
         return airportDao.getAllAirportsData(lang);
     }
 
+    /**
+     * Возвращает {@code Map} где клюем является код аэропорта, а значением название аэропорта.
+     * @param lang язык на котором возвращаются названия аэропорта
+     * @return возвращает {@code Map} всех аэропортов
+     * @throws ClassNotFoundException если произошла ошибка в драйвере работы с базой
+     * @throws SQLException если произошла ошибка работы с базой
+     * @throws PropertyVetoException если произошла ошибка работы с сервисом подключения к базе
+     */
     @Override
     public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws ClassNotFoundException, SQLException, PropertyVetoException {
         return airportDao.getAllAirportsCodeAndName(lang);
