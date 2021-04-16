@@ -1,9 +1,9 @@
-package by.it_academy.jd2.airports.model.dao;
+package by.it_academy.jd2.airports.dao;
 
-import by.it_academy.jd2.airports.model.dao.api.IFlightsDao;
-import by.it_academy.jd2.airports.model.dao.core.ConnectionPoolCreator;
-import by.it_academy.jd2.airports.model.dto.Flights;
-import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.dao.api.IFlightsDao;
+import by.it_academy.jd2.airports.dao.core.ConnectionPoolCreator;
+import by.it_academy.jd2.airports.core.dto.Flights;
+import by.it_academy.jd2.airports.core.dto.Lang;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -24,7 +24,7 @@ public class FlightsDao implements IFlightsDao {
     }
 
     @Override
-    public int getFlightsCountByAirportsCode(String departureAirportCode, String arrivalAirportCode) throws SQLException {
+    public int getFlightsCountByAirportsCode(String departureAirportCode, String arrivalAirportCode) throws IllegalAccessException {
         int result = 0;
         String sql = "SELECT count(*) FROM flights WHERE departure_airport=? AND arrival_airport=?";
 
@@ -39,14 +39,14 @@ public class FlightsDao implements IFlightsDao {
                 }
             }
         } catch (SQLException e) {
-            throw  new SQLException("Ошибка работы с базой данных");
+            throw new IllegalAccessException("Ошибка работы с базой данных");
         }
 
         return result;
     }
 
     @Override
-    public int getFlightsCountByAirportsCodeAndDates(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate) throws SQLException {
+    public int getFlightsCountByAirportsCodeAndDates(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate) throws IllegalAccessException {
         int result = 0;
         String sql = " SELECT count(*)" +
                 " FROM flights" +
@@ -68,14 +68,14 @@ public class FlightsDao implements IFlightsDao {
                 }
             }
         } catch (SQLException e) {
-            throw new SQLException("Ошибка работы с базой данных");
+            throw new IllegalAccessException("Ошибка работы с базой данных");
         }
 
         return result;
     }
 
     @Override
-    public List<Flights> getFlightsByAirportsCodeAndDates(Lang lang, String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate, int limit, int offset) throws SQLException {
+    public List<Flights> getFlightsByAirportsCodeAndDates(Lang lang, String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate, int limit, int offset) throws IllegalAccessException {
         List<Flights> result = new ArrayList<>();
         String sql = " SELECT f.flight_no," +
                 " f.departure_airport," +
@@ -118,14 +118,14 @@ public class FlightsDao implements IFlightsDao {
                 }
             }
         } catch (SQLException e) {
-            throw new SQLException("Ошибка работы с базой данных");
+            throw new IllegalAccessException("Ошибка работы с базой данных");
         }
 
         return result;
     }
 
     @Override
-    public List<Flights> getFlightsByAirportsCode(Lang lang, String departureAirportCode, String arrivalAirportCode, int limit, int offset) throws SQLException {
+    public List<Flights> getFlightsByAirportsCode(Lang lang, String departureAirportCode, String arrivalAirportCode, int limit, int offset) throws IllegalAccessException {
         List<Flights> result = new ArrayList<>();
         String sql = "SELECT f.flight_no," +
                 " f.departure_airport," +
@@ -163,14 +163,14 @@ public class FlightsDao implements IFlightsDao {
                 }
             }
         } catch (SQLException e) {
-            throw new SQLException("Ошибка работы с базой данных");
+            throw new IllegalAccessException("Ошибка работы с базой данных");
         }
 
         return result;
     }
 
 
-    public static void main(String[] args) throws PropertyVetoException, SQLException {
+    public static void main(String[] args) throws PropertyVetoException, IllegalAccessException {
         FlightsDao dao = new FlightsDao();
 
         List<Flights> flightsByAirportsCode = dao.getFlightsByAirportsCode(Lang.RU, "DME", "ROV", 25, 0);

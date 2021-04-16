@@ -1,4 +1,4 @@
-package by.it_academy.jd2.airports.model.dto;
+package by.it_academy.jd2.airports.core.dto;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;

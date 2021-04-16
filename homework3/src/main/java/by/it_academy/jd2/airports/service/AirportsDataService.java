@@ -1,13 +1,12 @@
 package by.it_academy.jd2.airports.service;
 
-import by.it_academy.jd2.airports.model.dao.AirportsDao;
-import by.it_academy.jd2.airports.model.dao.api.IAirportsDao;
-import by.it_academy.jd2.airports.model.dto.AirportsData;
-import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.dao.AirportsDao;
+import by.it_academy.jd2.airports.dao.api.IAirportsDao;
+import by.it_academy.jd2.airports.core.dto.AirportsData;
+import by.it_academy.jd2.airports.core.dto.Lang;
 import by.it_academy.jd2.airports.service.api.IAirportsDataService;
 
 import java.beans.PropertyVetoException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +21,12 @@ public class AirportsDataService implements IAirportsDataService {
     private static volatile AirportsDataService instance;
     private final IAirportsDao airportDao;
 
-    private AirportsDataService() throws PropertyVetoException {
-        airportDao = new AirportsDao();
+    private AirportsDataService() throws IllegalAccessException {
+        try {
+            airportDao = new AirportsDao();
+        } catch (PropertyVetoException e){
+            throw new IllegalAccessException("Ошибка сервиса");
+        }
     }
 
     /**
@@ -32,14 +35,14 @@ public class AirportsDataService implements IAirportsDataService {
      * <p>Если объект был создан ранее, то он и возвращается</p>
      * @return возвращает объект {@code AirportsDataService}
      */
-    public static AirportsDataService getInstance() {
+    public static AirportsDataService getInstance() throws IllegalAccessException {
         if (instance == null) {
             synchronized (AirportsDataService.class){
                 if (instance == null) {
                     try {
                         instance = new AirportsDataService();
-                    } catch (PropertyVetoException e) {
-                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalAccessException("Ошибка сервиса");
                     }
                 }
             }
@@ -51,12 +54,10 @@ public class AirportsDataService implements IAirportsDataService {
      * Данный метод предназначен для получения списка всех аэропортов
      * @param lang язык на котором возвращаются названия аэропорта и города
      * @return список всех аэропортов
-     * @throws ClassNotFoundException если произошла ошибка в драйвере работы с базой
-     * @throws SQLException если произошла ошибка работы с базой
-     * @throws PropertyVetoException если произошла ошибка работы с сервисом подключения к базе
+     * @throws IllegalAccessException если произошла ошибка в драйвере работы с базой или сервисом
      */
     @Override
-    public List<AirportsData> getAllAirportsData(Lang lang) throws ClassNotFoundException, SQLException, PropertyVetoException {
+    public List<AirportsData> getAllAirportsData(Lang lang) throws IllegalAccessException {
         return airportDao.getAllAirportsData(lang);
     }
 
@@ -64,12 +65,10 @@ public class AirportsDataService implements IAirportsDataService {
      * Возвращает {@code Map} где клюем является код аэропорта, а значением название аэропорта.
      * @param lang язык на котором возвращаются названия аэропорта
      * @return возвращает {@code Map} всех аэропортов
-     * @throws ClassNotFoundException если произошла ошибка в драйвере работы с базой
-     * @throws SQLException если произошла ошибка работы с базой
-     * @throws PropertyVetoException если произошла ошибка работы с сервисом подключения к базе
+     * @throws IllegalAccessException если произошла ошибка в драйвере работы с базой или сервисом
      */
     @Override
-    public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws ClassNotFoundException, SQLException, PropertyVetoException {
+    public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws IllegalAccessException {
         return airportDao.getAllAirportsCodeAndName(lang);
     }
 

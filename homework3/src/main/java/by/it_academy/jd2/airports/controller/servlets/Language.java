@@ -1,7 +1,6 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
-import by.it_academy.jd2.airports.model.dto.Lang;
-import com.oracle.wls.shaded.org.apache.bcel.generic.LNEG;
+import by.it_academy.jd2.airports.core.dto.Lang;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

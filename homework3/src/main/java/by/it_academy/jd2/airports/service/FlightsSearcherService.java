@@ -1,13 +1,12 @@
 package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.core.utils.StringUtils;
-import by.it_academy.jd2.airports.model.dao.FlightsDao;
-import by.it_academy.jd2.airports.model.dao.api.IFlightsDao;
-import by.it_academy.jd2.airports.model.dto.*;
+import by.it_academy.jd2.airports.dao.FlightsDao;
+import by.it_academy.jd2.airports.dao.api.IFlightsDao;
+import by.it_academy.jd2.airports.core.dto.*;
 import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 
 import java.beans.PropertyVetoException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,8 +24,12 @@ public class FlightsSearcherService implements IFlightsSearcherService {
     private static volatile FlightsSearcherService instance;
     private final IFlightsDao flightsDao;
 
-    private FlightsSearcherService() throws PropertyVetoException {
-        flightsDao = new FlightsDao();
+    private FlightsSearcherService() throws IllegalAccessException {
+        try {
+            flightsDao = new FlightsDao();
+        } catch (PropertyVetoException e){
+            throw new IllegalAccessException("Ошибка сервиса");
+        }
     }
 
     /**
@@ -35,18 +38,14 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      * <p>Если объект был создан ранее, то он и возвращается</p>
      * @return возвращает объект {@code FlightsSearcherService}
      */
-    public static FlightsSearcherService getInstance() {
+    public static FlightsSearcherService getInstance() throws IllegalAccessException {
         if (instance == null) {
             synchronized (FlightsSearcherService.class){
                 if (instance == null) {
-                    try {
                         instance = new FlightsSearcherService();
-                    } catch (PropertyVetoException e) {
-                        e.printStackTrace();
                     }
                 }
             }
-        }
         return instance;
     }
 
@@ -58,13 +57,13 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      * @param pageParam параметры вывода данных на страницу
      * @return список рейсов {@code Flights} соответствущий заданных параметрам.
      *          Если ничего не найдено вернет {@code null}
-     * @throws SQLException если произошла ошибка работы с базой
+     * @throws IllegalAccessException если произошла ошибка работы с базой
      * @throws IllegalArgumentException если переданы неверные параметры поиска
      * @see FlightSearchParam
      * @see FlightsPageParam
      */
     @Override
-    public List<Flights> findFlights(Lang lang, FlightSearchParam searchParam, FlightsPageParam pageParam) throws SQLException, IllegalArgumentException {
+    public List<Flights> findFlights(Lang lang, FlightSearchParam searchParam, FlightsPageParam pageParam) throws IllegalArgumentException, IllegalAccessException {
         validateSearchParam(searchParam);
 
         int flightsTotalCount = getFlightsCount(searchParam);
@@ -96,11 +95,11 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      * @param searchParam параметры поиска
      * @return количество рейсов соответствующих критериям поиска.
      *         если ничего не найдено вернет ноль
-     * @throws SQLException если произошла ошибка работы с базой данных
+     * @throws IllegalAccessException если произошла ошибка работы с базой данных
      * @see FlightSearchParam
      */
     @Override
-    public int getFlightsCount (FlightSearchParam searchParam) throws SQLException {
+    public int getFlightsCount (FlightSearchParam searchParam) throws IllegalAccessException {
         validateSearchParam(searchParam);
 
         if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){

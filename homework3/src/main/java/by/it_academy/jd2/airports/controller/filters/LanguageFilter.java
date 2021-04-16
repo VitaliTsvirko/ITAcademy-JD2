@@ -1,6 +1,6 @@
 package by.it_academy.jd2.airports.controller.filters;
 
-import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.core.dto.Lang;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 

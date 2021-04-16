@@ -1,9 +1,9 @@
-package by.it_academy.jd2.airports.model.dao;
+package by.it_academy.jd2.airports.dao;
 
-import by.it_academy.jd2.airports.model.dao.api.IAirportsDao;
-import by.it_academy.jd2.airports.model.dao.core.ConnectionPoolCreator;
-import by.it_academy.jd2.airports.model.dto.AirportsData;
-import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.dao.api.IAirportsDao;
+import by.it_academy.jd2.airports.dao.core.ConnectionPoolCreator;
+import by.it_academy.jd2.airports.core.dto.AirportsData;
+import by.it_academy.jd2.airports.core.dto.Lang;
 import org.postgresql.geometric.PGpoint;
 
 import javax.sql.DataSource;
@@ -28,7 +28,7 @@ public class AirportsDao implements IAirportsDao {
     }
 
     @Override
-    public List<AirportsData> getAllAirportsData(Lang lang) throws SQLException {
+    public List<AirportsData> getAllAirportsData(Lang lang) throws IllegalAccessException {
         List<AirportsData> result = new LinkedList<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name, " +
                         "ml.city ->> ? AS city, ml.coordinates, ml.timezone " +
@@ -59,14 +59,14 @@ public class AirportsDao implements IAirportsDao {
                 }
             }
         } catch (SQLException e) {
-            throw  new SQLException("Ошибка работы с базой данных");
+            throw new IllegalAccessException("Ошибка работы с базой данных");
         }
 
         return result;
     }
 
     @Override
-    public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws SQLException {
+    public Map<String, String> getAllAirportsCodeAndName(Lang lang) throws IllegalAccessException {
         Map<String, String> result = new LinkedHashMap<>();
         String sql = "SELECT ml.airport_code, ml.airport_name ->> ? AS airport_name " +
                      "FROM bookings.airports_data ml " +
@@ -83,7 +83,7 @@ public class AirportsDao implements IAirportsDao {
                 }
             }
         } catch (SQLException e) {
-            throw  new SQLException("Ошибка работы с базой данных");
+            throw new IllegalAccessException("Ошибка работы с базой данных");
         }
 
         return result;

@@ -1,9 +1,9 @@
 package by.it_academy.jd2.airports.controller.servlets;
 
-import by.it_academy.jd2.airports.model.dto.FlightSearchParam;
-import by.it_academy.jd2.airports.model.dto.Flights;
-import by.it_academy.jd2.airports.model.dto.FlightsPageParam;
-import by.it_academy.jd2.airports.model.dto.Lang;
+import by.it_academy.jd2.airports.core.dto.FlightSearchParam;
+import by.it_academy.jd2.airports.core.dto.Flights;
+import by.it_academy.jd2.airports.core.dto.FlightsPageParam;
+import by.it_academy.jd2.airports.core.dto.Lang;
 import by.it_academy.jd2.airports.service.AirportsDataService;
 import by.it_academy.jd2.airports.service.FlightsSearcherService;
 import by.it_academy.jd2.airports.service.api.IAirportsDataService;
@@ -28,6 +28,9 @@ public class FlightsSearch extends HttpServlet {
     private final IFlightsSearcherService flightsSearcherService = FlightsSearcherService.getInstance();
     private final IAirportsDataService airportsDataService = AirportsDataService.getInstance();
     private Map<String, String> airportsMap;
+
+    public FlightsSearch() throws IllegalAccessException {
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,7 +63,7 @@ public class FlightsSearch extends HttpServlet {
         } catch (IllegalArgumentException e){
             req.setAttribute("error", true);
             req.setAttribute("errorMessage", e.getMessage());
-        } catch (ClassNotFoundException | SQLException | PropertyVetoException e) {
+        } catch (IllegalAccessException e) {
             req.setAttribute("error", true);
             req.setAttribute("errorMessage", "Ошибка работы с базой данных. Попробуйте повторить запрос позже...");
         }
