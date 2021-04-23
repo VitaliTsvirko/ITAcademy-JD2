@@ -1,4 +1,4 @@
-package by.it_academy.jd2.airports.dao.core;
+package by.it_academy.jd2.airports.dao.nativesql.core;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 

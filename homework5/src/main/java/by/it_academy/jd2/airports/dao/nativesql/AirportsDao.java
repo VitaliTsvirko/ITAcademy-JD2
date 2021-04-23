@@ -1,10 +1,10 @@
-package by.it_academy.jd2.airports.dao;
+package by.it_academy.jd2.airports.dao.nativesql;
 
 import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.dao.api.IAirportsDao;
-import by.it_academy.jd2.airports.dao.core.ConnectionPoolCreator;
+import by.it_academy.jd2.airports.dao.nativesql.core.ConnectionPoolCreator;
 import by.it_academy.jd2.airports.core.dto.Lang;
-import by.it_academy.jd2.airports.dao.core.HibernateCreator;
+import by.it_academy.jd2.airports.dao.hibernate.core.HibernateCreator;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.postgresql.geometric.PGpoint;

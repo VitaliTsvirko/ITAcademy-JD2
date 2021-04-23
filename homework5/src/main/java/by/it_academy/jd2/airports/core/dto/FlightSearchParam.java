@@ -33,6 +33,15 @@ public class FlightSearchParam implements Serializable {
      */
     private String queryPageNo;
 
+    private Lang lang;
+
+    public Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
+    }
 
     public String getDepartureAirport() {
         return departureAirport;

@@ -42,6 +42,7 @@ public class FlightsSearch extends HttpServlet {
         searchParam.setArrivalDate(req.getParameter("arrivalDate"));
         searchParam.setArrivalAirport(req.getParameter("arrivalAirport"));
         searchParam.setQueryPageNo(req.getParameter("pageNo"));
+        searchParam.setLang(lang);
 
         try{
             this.airportsMap = airportsDataService.getAllAirportsCodeAndName(lang);
@@ -52,7 +53,7 @@ public class FlightsSearch extends HttpServlet {
                 FlightsPageParam pageParam = new FlightsPageParam();
                 pageParam.setPageItemLimit(25);
 
-                List<Flights> flights = flightsSearcherService.findFlights(lang, searchParam, pageParam);
+                List<Flights> flights = flightsSearcherService.findFlights(searchParam, pageParam);
 
                 req.setAttribute("pageParam", pageParam);
                 req.setAttribute("flightsData", flights);

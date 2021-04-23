@@ -9,6 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IFlightsSearcherService {
-    List<Flights> findFlights(Lang lang, FlightSearchParam searchParam, FlightsPageParam pageParam) throws IllegalArgumentException, IllegalAccessException;
+    List<Flights> findFlights(FlightSearchParam searchParam, FlightsPageParam pageParam) throws IllegalArgumentException, IllegalAccessException;
     int getFlightsCount (FlightSearchParam searchParam) throws IllegalAccessException;
 }

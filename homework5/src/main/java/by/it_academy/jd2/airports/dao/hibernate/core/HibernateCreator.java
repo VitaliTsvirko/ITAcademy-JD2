@@ -1,4 +1,4 @@
-package by.it_academy.jd2.airports.dao.core;
+package by.it_academy.jd2.airports.dao.hibernate.core;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

@@ -3,7 +3,7 @@ package by.it_academy.jd2.airports.dao.hibernate;
 import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.core.dto.Lang;
 import by.it_academy.jd2.airports.dao.api.IAirportsDao;
-import by.it_academy.jd2.airports.dao.core.HibernateCreator;
+import by.it_academy.jd2.airports.dao.hibernate.core.HibernateCreator;
 import org.hibernate.Session;
 
 import java.util.LinkedHashMap;

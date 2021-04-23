@@ -1,14 +1,12 @@
 package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.core.utils.StringUtils;
-import by.it_academy.jd2.airports.dao.FlightsDao;
 import by.it_academy.jd2.airports.dao.api.IFlightsDao;
 import by.it_academy.jd2.airports.core.dto.*;
 import by.it_academy.jd2.airports.dao.hibernate.FlightsHibernateDao;
 import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 
 import java.beans.PropertyVetoException;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -23,15 +21,7 @@ import java.util.List;
  */
 public class FlightsSearcherService implements IFlightsSearcherService {
     private static volatile FlightsSearcherService instance;
-    private final IFlightsDao flightsDao;
-
-    private FlightsSearcherService() throws IllegalAccessException {
-        try {
-            flightsDao = new FlightsHibernateDao();
-        } catch (PropertyVetoException e){
-            throw new IllegalAccessException("Ошибка сервиса");
-        }
-    }
+    private final IFlightsDao flightsDao = ApplicationFactory.getFlightDao();
 
     /**
      * Данный метод метод предназначен для создания и возвращения объекта
@@ -53,7 +43,6 @@ public class FlightsSearcherService implements IFlightsSearcherService {
     /**
      * Данный метод выполняет поиск рейсов по заданным параметрам переданным в переменной {@code FlightSearchParam searchParam}
      *  * Параметры вывода передаются в переменной {@code FlightsPageParam pageParam}
-     * @param lang язык на котором возвращаются названия
      * @param searchParam параметры поиска
      * @param pageParam параметры вывода данных на страницу
      * @return список рейсов {@code Flights} соответствущий заданных параметрам.
@@ -64,25 +53,21 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      * @see FlightsPageParam
      */
     @Override
-    public List<Flights> findFlights(Lang lang, FlightSearchParam searchParam, FlightsPageParam pageParam) throws IllegalArgumentException, IllegalAccessException {
-        validateSearchParam(searchParam);
-
-        int flightsTotalCount = getFlightsCount(searchParam);
-        pageParam.setFlightsTotalCount(flightsTotalCount);
-
-        if (flightsTotalCount > 0){
-            int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / pageParam.getPageItemLimit());
-            int pageNo = validatePageNo(searchParam.getQueryPageNo(), totalPages);
-            int offset = requestOffsetCalc(flightsTotalCount, pageParam.getPageItemLimit(), pageNo);
-
+    public List<Flights> findFlights(FlightSearchParam searchParam, FlightsPageParam pageParam) throws IllegalArgumentException, IllegalAccessException {
+        if (validateSearchParam(searchParam)) {
+            int flightsTotalCount = getFlightsCount(searchParam);
             pageParam.setFlightsTotalCount(flightsTotalCount);
-            pageParam.setTotalPages(totalPages);
-            pageParam.setPageNo(pageNo);
 
-            if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
-                return flightsDao.getFlightsByAirportsCode(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), pageParam.getPageItemLimit(), offset);
-            } else {
-                return flightsDao.getFlightsByAirportsCodeAndDates(lang, searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), LocalDate.parse(searchParam.getDepartureDate()), LocalDate.parse(searchParam.getDepartureDate()), pageParam.getPageItemLimit(), offset);
+            if (flightsTotalCount > 0) {
+                int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / pageParam.getPageItemLimit());
+                int pageNo = validatePageNo(searchParam.getQueryPageNo(), totalPages);
+                int offset = requestOffsetCalc(flightsTotalCount, pageParam.getPageItemLimit(), pageNo);
+
+                pageParam.setFlightsTotalCount(flightsTotalCount);
+                pageParam.setTotalPages(totalPages);
+                pageParam.setPageNo(pageNo);
+
+                return flightsDao.findFlightsByAirportsOrDates(searchParam, pageParam.getPageItemLimit(), offset);
             }
         }
 
@@ -101,12 +86,10 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      */
     @Override
     public int getFlightsCount (FlightSearchParam searchParam) throws IllegalAccessException {
-        validateSearchParam(searchParam);
-
-        if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())){
-            return flightsDao.getFlightsCountByAirportsCode(searchParam.getDepartureAirport(), searchParam.getArrivalAirport());
+        if (validateSearchParam(searchParam)){
+            return flightsDao.getFlightsCountByAirportsCodeOrDates(searchParam);
         } else {
-            return flightsDao.getFlightsCountByAirportsCodeAndDates(searchParam.getDepartureAirport(), searchParam.getArrivalAirport(), LocalDate.parse(searchParam.getDepartureDate()), LocalDate.parse(searchParam.getDepartureDate()));
+            return 0;
         }
     }
 
@@ -117,7 +100,7 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      * @param searchParam параметры поиска
      * @throws IllegalArgumentException если есть ошибка в параметрах заданных поиска
      */
-    private void validateSearchParam(FlightSearchParam searchParam) throws IllegalArgumentException{
+    private boolean validateSearchParam(FlightSearchParam searchParam) throws IllegalArgumentException{
         if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureAirport(), searchParam.getArrivalAirport())){
             throw new IllegalArgumentException("Заполните поля Аэропорт вылета и Аэропорт прилета!");
         }
@@ -127,6 +110,8 @@ public class FlightsSearcherService implements IFlightsSearcherService {
                 throw new IllegalArgumentException("Заполните поля Дата вылета и Дата прилета, или выполните поиск без дат");
             }
         }
+
+        return true;
     }
 
 
