@@ -3,10 +3,7 @@ package by.it_academy.jd2.airports.core.dto;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -48,6 +45,23 @@ public class AirportsData implements Serializable {
      */
     @Column(name = "timezone")
     private String timezone;
+
+
+    @Transient
+    private final Coordinates coordinatesPoints = new Coordinates();
+
+    public Double getCoordinateX() {
+        return coordinatesPoints.x;
+    }
+
+    public Double getCoordinateY() {
+        return coordinatesPoints.y;
+    }
+
+    public void setCoordinatesPoints(double x, double y) {
+        this.coordinatesPoints.setX(x);
+        this.coordinatesPoints.setY(y);
+    }
 
     public String getAirportCode() {
         return airportCode;

@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Double.parseDouble;
+
 /**
  * @author Vitali Tsvirko
  */
@@ -21,6 +23,15 @@ public class AirportsHibernateDao implements IAirportsDao {
         List<AirportsData> result;
 
         result = dataSource.createQuery("FROM AirportsData ORDER BY airportName").list();
+
+        for (AirportsData airport : result) {
+            String[] split = airport.getCoordinates()
+                            .replace("(", "")
+                            .replace(")", "")
+                            .split(",");
+
+            airport.setCoordinatesPoints(parseDouble(split[0]), parseDouble(split[1]));
+        }
 
         return result;
     }

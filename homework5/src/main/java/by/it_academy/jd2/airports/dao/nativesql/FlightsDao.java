@@ -39,7 +39,7 @@ public class FlightsDao implements IFlightsDao {
         if (StringUtils.isAnyNullOrEmpty(searchParam.getDepartureDate(), searchParam.getArrivalDate())) {
             return this.getFlightsCountByAirportsCode(searchParam);
         } else {
-            return this.getFlightsCountByAirportsCodeOrDates(searchParam);
+            return this.getFlightsCountByAirportsCodeAndDates(searchParam);
         }
     }
 

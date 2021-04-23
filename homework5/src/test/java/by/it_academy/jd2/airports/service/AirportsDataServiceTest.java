@@ -2,7 +2,7 @@ package by.it_academy.jd2.airports.service;
 
 import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.core.dto.Lang;
-import by.it_academy.jd2.airports.dao.AirportsDao;
+import by.it_academy.jd2.airports.dao.nativesql.AirportsDao;
 import by.it_academy.jd2.airports.dao.api.IAirportsDao;
 import by.it_academy.jd2.airports.service.api.IAirportsDataService;
 import org.junit.jupiter.api.Assertions;

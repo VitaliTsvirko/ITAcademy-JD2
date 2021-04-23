@@ -43,10 +43,9 @@
                         <td>${data.airportCode}</td>
                         <td>${data.airportName}</td>
                         <td>${data.city}</td>
-<%--                        <td><a target="_blank" href="http://maps.google.com/maps?q=${data.coordinates.y}, ${data.coordinates.x}">
-                                ${data.coordinates.x}, <br> ${data.coordinates.y}</a>
-                        </td>--%>
-                        <td>${data.coordinates}</td>
+                        <td><a target="_blank" href="http://maps.google.com/maps?q=${data.coordinateY}, ${data.coordinateX}">
+                                ${data.coordinateX}, <br> ${data.coordinateY}</a>
+                        </td>
                         <td>${data.timezone}</td>
                     </tr>
                 </c:forEach>

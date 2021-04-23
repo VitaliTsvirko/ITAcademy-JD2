@@ -52,8 +52,8 @@ public class AirportsDao implements IAirportsDao {
                         data.setCity(rs.getString("city"));
 
                         pgPoint = new PGpoint(rs.getString("coordinates"));
+                        data.setCoordinatesPoints(pgPoint.x, pgPoint.y);
 
-                        //data.setCoordinates(pgPoint.x, pgPoint.y);
                         data.setTimezone(rs.getString("timezone"));
 
                         result.add(data);
@@ -93,7 +93,7 @@ public class AirportsDao implements IAirportsDao {
 
 
     public static void main(String[] args) {
-        Session session = HibernateCreator.getInstance().openSession();
+  /*      Session session = HibernateCreator.getInstance().openSession();
 
         AirportsData data = new AirportsData();
 
@@ -109,9 +109,14 @@ public class AirportsDao implements IAirportsDao {
 
         AirportsData yks = session.load(AirportsData.class, "YKS");
 
-        System.out.println(yks);
+        System.out.println(yks);*/
+
+        AirportsData adata = new AirportsData();
+
+        adata.setCoordinatesPoints(1,1);
 
 
+        Double coordinateY = adata.getCoordinateY();
 
 
     }
