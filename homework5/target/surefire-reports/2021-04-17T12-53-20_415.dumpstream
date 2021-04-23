@@ -1,0 +1,4 @@
+# Created at 2021-04-17T12:53:20.811
+Boot Manifest-JAR contains absolute paths in classpath 'D:\01. Vitali\03. Inf\01. Java\01. IT-Academy\02. JD2\03. Projects\JD2\homework3\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+

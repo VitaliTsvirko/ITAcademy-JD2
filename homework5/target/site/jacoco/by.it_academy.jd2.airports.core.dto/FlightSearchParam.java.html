@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FlightSearchParam.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework5-airports</a> &gt; <a href="index.source.html" class="el_package">by.it_academy.jd2.airports.core.dto</a> &gt; <span class="el_source">FlightSearchParam.java</span></div><h1>FlightSearchParam.java</h1><pre class="source lang-java linenums">package by.it_academy.jd2.airports.core.dto;
+
+import java.io.Serializable;
+
+/**
+ * Данный класс переназначен для хранения параметров поиска рейсов
+ *
+ * @author Vitali Tsvirko
+ */
+<span class="fc" id="L10">public class FlightSearchParam implements Serializable {</span>
+    /**
+     * Аэропорт вылета
+     */
+    private String departureAirport;
+
+    /**
+     * Аэропорт прилета
+     */
+    private String arrivalAirport;
+
+    /**
+     * Дата вылета
+     */
+    private String departureDate;
+
+    /**
+     * Дата прилета
+     */
+    private String arrivalDate;
+
+    /**
+     * Номер страницы переданных в GET запросе
+     */
+    private String queryPageNo;
+
+
+    public String getDepartureAirport() {
+<span class="fc" id="L38">        return departureAirport;</span>
+    }
+
+    public void setDepartureAirport(String departureAirport) {
+<span class="fc" id="L42">        this.departureAirport = departureAirport;</span>
+<span class="fc" id="L43">    }</span>
+
+    public String getArrivalAirport() {
+<span class="fc" id="L46">        return arrivalAirport;</span>
+    }
+
+    public void setArrivalAirport(String arrivalAirport) {
+<span class="fc" id="L50">        this.arrivalAirport = arrivalAirport;</span>
+<span class="fc" id="L51">    }</span>
+
+    public String getDepartureDate() {
+<span class="fc" id="L54">        return departureDate;</span>
+    }
+
+    public void setDepartureDate(String departureDate) {
+<span class="fc" id="L58">        this.departureDate = departureDate;</span>
+<span class="fc" id="L59">    }</span>
+
+    public String getArrivalDate() {
+<span class="fc" id="L62">        return arrivalDate;</span>
+    }
+
+    public void setArrivalDate(String arrivalDate) {
+<span class="fc" id="L66">        this.arrivalDate = arrivalDate;</span>
+<span class="fc" id="L67">    }</span>
+
+    public String getQueryPageNo() {
+<span class="fc" id="L70">        return queryPageNo;</span>
+    }
+
+    public void setQueryPageNo(String queryPageNo) {
+<span class="fc" id="L74">        this.queryPageNo = queryPageNo;</span>
+<span class="fc" id="L75">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L79">        return &quot;FlightSearchParam{&quot; +</span>
+                &quot;departureAirport='&quot; + departureAirport + '\'' +
+                &quot;, arrivalAirport='&quot; + arrivalAirport + '\'' +
+                &quot;, departureDate='&quot; + departureDate + '\'' +
+                &quot;, arrivalDate='&quot; + arrivalDate + '\'' +
+                &quot;, queryPageNo='&quot; + queryPageNo + '\'' +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FlightsSearch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework5-airports</a> &gt; <a href="index.source.html" class="el_package">by.it_academy.jd2.airports.controller.servlets</a> &gt; <span class="el_source">FlightsSearch.java</span></div><h1>FlightsSearch.java</h1><pre class="source lang-java linenums">package by.it_academy.jd2.airports.controller.servlets;
+
+import by.it_academy.jd2.airports.core.dto.FlightSearchParam;
+import by.it_academy.jd2.airports.core.dto.Flights;
+import by.it_academy.jd2.airports.core.dto.FlightsPageParam;
+import by.it_academy.jd2.airports.core.dto.Lang;
+import by.it_academy.jd2.airports.service.AirportsDataService;
+import by.it_academy.jd2.airports.service.FlightsSearcherService;
+import by.it_academy.jd2.airports.service.api.IAirportsDataService;
+import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by Vitali Tsvirko
+ */
+@WebServlet(urlPatterns = &quot;/search&quot;)
+public class FlightsSearch extends HttpServlet {
+<span class="nc" id="L28">    private final IFlightsSearcherService flightsSearcherService = FlightsSearcherService.getInstance();</span>
+<span class="nc" id="L29">    private final IAirportsDataService airportsDataService = AirportsDataService.getInstance();</span>
+    private Map&lt;String, String&gt; airportsMap;
+
+<span class="nc" id="L32">    public FlightsSearch() throws IllegalAccessException {</span>
+<span class="nc" id="L33">    }</span>
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<span class="nc" id="L37">        Lang lang = (Lang) req.getSession().getAttribute(&quot;lang&quot;);</span>
+<span class="nc" id="L38">        FlightSearchParam searchParam = new FlightSearchParam();</span>
+
+<span class="nc" id="L40">        searchParam.setDepartureDate(req.getParameter(&quot;departureDate&quot;));</span>
+<span class="nc" id="L41">        searchParam.setDepartureAirport(req.getParameter(&quot;departureAirport&quot;));</span>
+<span class="nc" id="L42">        searchParam.setArrivalDate(req.getParameter(&quot;arrivalDate&quot;));</span>
+<span class="nc" id="L43">        searchParam.setArrivalAirport(req.getParameter(&quot;arrivalAirport&quot;));</span>
+<span class="nc" id="L44">        searchParam.setQueryPageNo(req.getParameter(&quot;pageNo&quot;));</span>
+
+        try{
+<span class="nc" id="L47">            this.airportsMap = airportsDataService.getAllAirportsCodeAndName(lang);</span>
+<span class="nc" id="L48">            req.setAttribute(&quot;airportsMap&quot;, airportsMap);</span>
+
+            //some filter select
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            if (req.getQueryString() != null){</span>
+<span class="nc" id="L52">                FlightsPageParam pageParam = new FlightsPageParam();</span>
+<span class="nc" id="L53">                pageParam.setPageItemLimit(25);</span>
+
+<span class="nc" id="L55">                List&lt;Flights&gt; flights = flightsSearcherService.findFlights(lang, searchParam, pageParam);</span>
+
+<span class="nc" id="L57">                req.setAttribute(&quot;pageParam&quot;, pageParam);</span>
+<span class="nc" id="L58">                req.setAttribute(&quot;flightsData&quot;, flights);</span>
+
+<span class="nc" id="L60">                String queryString = req.getQueryString().replace(&quot;&amp;pageNo=&quot;+pageParam.getPageNo(), &quot;&quot;);</span>
+<span class="nc" id="L61">                req.setAttribute(&quot;queryString&quot;, queryString);</span>
+            }
+<span class="nc" id="L63">        } catch (IllegalArgumentException e){</span>
+<span class="nc" id="L64">            req.setAttribute(&quot;error&quot;, true);</span>
+<span class="nc" id="L65">            req.setAttribute(&quot;errorMessage&quot;, e.getMessage());</span>
+<span class="nc" id="L66">        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L67">            req.setAttribute(&quot;error&quot;, true);</span>
+<span class="nc" id="L68">            req.setAttribute(&quot;errorMessage&quot;, &quot;Ошибка работы с базой данных. Попробуйте повторить запрос позже...&quot;);</span>
+<span class="nc" id="L69">        }</span>
+
+<span class="nc" id="L71">        req.setAttribute(&quot;searchParam&quot;, searchParam);</span>
+<span class="nc" id="L72">        req.getRequestDispatcher(&quot;flightsSearch.jsp&quot;).forward(req, resp);</span>
+<span class="nc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

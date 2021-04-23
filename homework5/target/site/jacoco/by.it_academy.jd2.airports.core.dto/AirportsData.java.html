@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AirportsData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework5-airports</a> &gt; <a href="index.source.html" class="el_package">by.it_academy.jd2.airports.core.dto</a> &gt; <span class="el_source">AirportsData.java</span></div><h1>AirportsData.java</h1><pre class="source lang-java linenums">package by.it_academy.jd2.airports.core.dto;
+
+import com.vividsolutions.jts.geom.Point;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+/**
+ * Данный класс переназначен для хранения данных о аэропортах
+ *
+ * @author Vitali Tsvirko
+ */
+@Entity
+@Table(name = &quot;airports&quot;)
+<span class="fc" id="L19">public class AirportsData implements Serializable {</span>
+    /**
+     * Код аэропорта
+     */
+    @Id
+    @Column(name = &quot;airport_code&quot;, length=3, columnDefinition=&quot;bpchar&quot;)
+    private String airportCode;
+
+    /**
+     * Название аэропорта
+     */
+    @Column(name = &quot;airport_name&quot;)
+    private String airportName;
+
+    /**
+     * Город
+     */
+    @Column(name = &quot;city&quot;)
+    private String city;
+
+    /**
+     * Координаты
+     */
+    @Column(name = &quot;coordinates&quot;, columnDefinition = &quot;point&quot;)
+    //@Type(type = &quot;org.hibernate.spatial.GeometryType&quot;)
+    private String coordinates;
+
+    /**
+     * Часовой пояс
+     */
+    @Column(name = &quot;timezone&quot;)
+    private String timezone;
+
+    public String getAirportCode() {
+<span class="nc" id="L53">        return airportCode;</span>
+    }
+
+    public void setAirportCode(String airportCode) {
+<span class="nc" id="L57">        this.airportCode = airportCode;</span>
+<span class="nc" id="L58">    }</span>
+
+    public String getAirportName() {
+<span class="nc" id="L61">        return airportName;</span>
+    }
+
+    public void setAirportName(String airportName) {
+<span class="nc" id="L65">        this.airportName = airportName;</span>
+<span class="nc" id="L66">    }</span>
+
+    public String getCity() {
+<span class="nc" id="L69">        return city;</span>
+    }
+
+    public void setCity(String city) {
+<span class="nc" id="L73">        this.city = city;</span>
+<span class="nc" id="L74">    }</span>
+
+    public String getCoordinates() {
+<span class="nc" id="L77">        return coordinates;</span>
+    }
+
+    public void setCoordinates(String point) {
+<span class="nc" id="L81">        this.coordinates = point;</span>
+<span class="nc" id="L82">    }</span>
+
+    public String getTimezone() {
+<span class="nc" id="L85">        return timezone;</span>
+    }
+
+    public void setTimezone(String timezone) {
+<span class="nc" id="L89">        this.timezone = timezone;</span>
+<span class="nc" id="L90">    }</span>
+
+
+    @Override
+    public String toString() {
+<span class="nc" id="L95">        return &quot;AirportsData{&quot; +</span>
+                &quot;airportCode='&quot; + airportCode + '\'' +
+                &quot;, airportName='&quot; + airportName + '\'' +
+                &quot;, city='&quot; + city + '\'' +
+<span class="nc" id="L99">                &quot;, coordinates=&quot; + coordinates.toString() +</span>
+                &quot;, timezone='&quot; + timezone + '\'' +
+                '}';
+    }
+
+    private class Coordinates implements Serializable{
+        private double x;
+        private double y;
+
+<span class="nc" id="L108">        public Coordinates(){</span>
+
+<span class="nc" id="L110">        }</span>
+
+<span class="nc" id="L112">        public Coordinates(double x, double y) {</span>
+<span class="nc" id="L113">            this.x = x;</span>
+<span class="nc" id="L114">            this.y = y;</span>
+<span class="nc" id="L115">        }</span>
+
+        public double getX() {
+<span class="nc" id="L118">            return x;</span>
+        }
+
+        public void setX(double x) {
+<span class="nc" id="L122">            this.x = x;</span>
+<span class="nc" id="L123">        }</span>
+
+        public double getY() {
+<span class="nc" id="L126">            return y;</span>
+        }
+
+        public void setY(double y) {
+<span class="nc" id="L130">            this.y = y;</span>
+<span class="nc" id="L131">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

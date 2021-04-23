@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FlightsDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework5-airports</a> &gt; <a href="index.source.html" class="el_package">by.it_academy.jd2.airports.dao</a> &gt; <span class="el_source">FlightsDao.java</span></div><h1>FlightsDao.java</h1><pre class="source lang-java linenums">package by.it_academy.jd2.airports.dao;
+
+import by.it_academy.jd2.airports.dao.api.IFlightsDao;
+import by.it_academy.jd2.airports.dao.core.ConnectionPoolCreator;
+import by.it_academy.jd2.airports.core.dto.Flights;
+import by.it_academy.jd2.airports.core.dto.Lang;
+
+import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Vitali Tsvirko
+ */
+public class FlightsDao implements IFlightsDao {
+<span class="nc" id="L22">    private final DataSource dataSource = ConnectionPoolCreator.getInstance();</span>
+<span class="nc" id="L23">    private final ZoneOffset offset = ZoneOffset.UTC;</span>
+
+<span class="nc" id="L25">    public FlightsDao() throws PropertyVetoException {</span>
+<span class="nc" id="L26">    }</span>
+
+    @Override
+    public int getFlightsCountByAirportsCode(String departureAirportCode, String arrivalAirportCode) throws IllegalAccessException {
+<span class="nc" id="L30">        int result = 0;</span>
+<span class="nc" id="L31">        String sql = &quot;SELECT count(*) FROM flights WHERE departure_airport=? AND arrival_airport=?&quot;;</span>
+
+<span class="nc" id="L33">        try (Connection connection = dataSource.getConnection()){</span>
+<span class="nc" id="L34">            try(PreparedStatement ps = connection.prepareStatement(sql)) {</span>
+<span class="nc" id="L35">                ps.setString(1, departureAirportCode);</span>
+<span class="nc" id="L36">                ps.setString(2, arrivalAirportCode);</span>
+
+<span class="nc" id="L38">                try (ResultSet rs = ps.executeQuery()) {</span>
+<span class="nc" id="L39">                    rs.next();</span>
+<span class="nc" id="L40">                    result = rs.getInt(&quot;count&quot;);</span>
+                }
+            }
+<span class="nc" id="L43">        } catch (SQLException e) {</span>
+<span class="nc" id="L44">            throw new IllegalAccessException(&quot;Ошибка работы с базой данных&quot;);</span>
+<span class="nc" id="L45">        }</span>
+
+<span class="nc" id="L47">        return result;</span>
+    }
+
+    @Override
+    public int getFlightsCountByAirportsCodeAndDates(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate) throws IllegalAccessException {
+<span class="nc" id="L52">        int result = 0;</span>
+<span class="nc" id="L53">        String sql = &quot; SELECT count(*)&quot; +</span>
+                &quot; FROM flights&quot; +
+                &quot; WHERE (departure_airport=? AND  scheduled_departure &gt; ? AND scheduled_departure &lt;= ?) &quot; +
+                &quot;       OR (arrival_airport=? AND  scheduled_arrival &gt; ? AND scheduled_arrival &lt;= ?)&quot;;
+
+<span class="nc" id="L58">        try (Connection connection = dataSource.getConnection()) {</span>
+<span class="nc" id="L59">            try (PreparedStatement ps = connection.prepareStatement(sql)) {</span>
+<span class="nc" id="L60">                ps.setString(1, departureAirportCode);</span>
+<span class="nc" id="L61">                ps.setTimestamp(2, Timestamp.valueOf(departureDate.atTime(00, 00, 00)));</span>
+<span class="nc" id="L62">                ps.setTimestamp(3, Timestamp.valueOf(departureDate.atTime(23, 59, 59)));</span>
+<span class="nc" id="L63">                ps.setString(4, arrivalAirportCode);</span>
+<span class="nc" id="L64">                ps.setTimestamp(5, Timestamp.valueOf(arrivalDate.atTime(00, 00, 00)));</span>
+<span class="nc" id="L65">                ps.setTimestamp(6, Timestamp.valueOf(arrivalDate.atTime(23, 59, 00)));</span>
+
+<span class="nc" id="L67">                try (ResultSet rs = ps.executeQuery()) {</span>
+<span class="nc" id="L68">                    rs.next();</span>
+<span class="nc" id="L69">                    result = rs.getInt(&quot;count&quot;);</span>
+                }
+            }
+<span class="nc" id="L72">        } catch (SQLException e) {</span>
+<span class="nc" id="L73">            throw new IllegalAccessException(&quot;Ошибка работы с базой данных&quot;);</span>
+<span class="nc" id="L74">        }</span>
+
+<span class="nc" id="L76">        return result;</span>
+    }
+
+    @Override
+    public List&lt;Flights&gt; getFlightsByAirportsCodeAndDates(Lang lang, String departureAirportCode, String arrivalAirportCode, LocalDate departureDate, LocalDate arrivalDate, int limit, int offset) throws IllegalAccessException {
+<span class="nc" id="L81">        List&lt;Flights&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L82">        String sql = &quot; SELECT f.flight_no,&quot; +</span>
+                &quot; f.departure_airport,&quot; +
+                &quot; f.arrival_airport,&quot; +
+                &quot; f.scheduled_departure,&quot; +
+                &quot; f.scheduled_arrival,&quot; +
+                &quot; f.actual_departure,&quot; +
+                &quot; f.actual_arrival,&quot; +
+                &quot; f.aircraft_code,&quot; +
+                &quot; ad.model -&gt;&gt; ? AS aircraft_model &quot; +
+                &quot; FROM flights f, aircrafts_data ad &quot; +
+                &quot; WHERE f.aircraft_code = ad.aircraft_code AND &quot; +
+                &quot;       (departure_airport=? AND  scheduled_departure &gt; ? AND scheduled_departure &lt;= ?) &quot; +
+                &quot;       OR (arrival_airport=? AND  scheduled_arrival &gt; ? AND scheduled_arrival &lt;= ?) LIMIT ? OFFSET ?&quot;;
+
+<span class="nc" id="L96">        try (Connection connection = dataSource.getConnection()) {</span>
+<span class="nc" id="L97">            try (PreparedStatement ps = connection.prepareStatement(sql)) {</span>
+<span class="nc" id="L98">                ps.setString(1, lang.getTextCode());</span>
+<span class="nc" id="L99">                ps.setString(2, departureAirportCode);</span>
+<span class="nc" id="L100">                ps.setTimestamp(3, Timestamp.valueOf(departureDate.atTime(00, 00, 00)));</span>
+<span class="nc" id="L101">                ps.setTimestamp(4, Timestamp.valueOf(departureDate.atTime(23, 59, 59)));</span>
+<span class="nc" id="L102">                ps.setString(5, arrivalAirportCode);</span>
+<span class="nc" id="L103">                ps.setTimestamp(6, Timestamp.valueOf(arrivalDate.atTime(00, 00, 00)));</span>
+<span class="nc" id="L104">                ps.setTimestamp(7, Timestamp.valueOf(arrivalDate.atTime(23, 59, 00)));</span>
+<span class="nc" id="L105">                ps.setInt(8, limit);</span>
+<span class="nc" id="L106">                ps.setInt(9, offset);</span>
+
+<span class="nc" id="L108">                try (ResultSet rs = ps.executeQuery()) {</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    while (rs.next()) {</span>
+<span class="nc" id="L110">                        Flights flights = new Flights();</span>
+<span class="nc" id="L111">                        flights.setFlightNo(rs.getString(&quot;flight_no&quot;));</span>
+<span class="nc" id="L112">                        flights.setScheduledDeparture(rs.getObject(&quot;scheduled_departure&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L113">                        flights.setScheduledArrival(rs.getObject(&quot;scheduled_arrival&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L114">                        flights.setActualDeparture(rs.getObject(&quot;actual_departure&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L115">                        flights.setActualArrival(rs.getObject(&quot;actual_arrival&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L116">                        flights.setAircraftModelCode(rs.getString(&quot;aircraft_model&quot;));</span>
+
+<span class="nc" id="L118">                        result.add(flights);</span>
+<span class="nc" id="L119">                    }</span>
+                }
+            }
+<span class="nc" id="L122">        } catch (SQLException e) {</span>
+<span class="nc" id="L123">            throw new IllegalAccessException(&quot;Ошибка работы с базой данных&quot;);</span>
+<span class="nc" id="L124">        }</span>
+
+<span class="nc" id="L126">        return result;</span>
+    }
+
+    @Override
+    public List&lt;Flights&gt; getFlightsByAirportsCode(Lang lang, String departureAirportCode, String arrivalAirportCode, int limit, int offset) throws IllegalAccessException {
+<span class="nc" id="L131">        List&lt;Flights&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L132">        String sql = &quot;SELECT f.flight_no,&quot; +</span>
+                &quot; f.departure_airport,&quot; +
+                &quot; f.arrival_airport,&quot; +
+                &quot; f.scheduled_departure,&quot; +
+                &quot; f.scheduled_arrival,&quot; +
+                &quot; f.actual_departure,&quot; +
+                &quot; f.actual_arrival,&quot; +
+                &quot; f.aircraft_code,&quot; +
+                &quot; ad.model -&gt;&gt; ? AS aircraft_model&quot; +
+                &quot; FROM flights f, aircrafts_data ad&quot; +
+                &quot; WHERE f.aircraft_code = ad.aircraft_code AND &quot; +
+                &quot;         departure_airport=? AND arrival_airport=? LIMIT ? OFFSET ?&quot;;
+
+<span class="nc" id="L145">        try (Connection connection = dataSource.getConnection()) {</span>
+<span class="nc" id="L146">            try (PreparedStatement ps = connection.prepareStatement(sql)) {</span>
+<span class="nc" id="L147">                ps.setString(1, lang.getTextCode());</span>
+<span class="nc" id="L148">                ps.setString(2, departureAirportCode);</span>
+<span class="nc" id="L149">                ps.setString(3, arrivalAirportCode);</span>
+<span class="nc" id="L150">                ps.setInt(4, limit);</span>
+<span class="nc" id="L151">                ps.setInt(5, offset);</span>
+
+<span class="nc" id="L153">                try (ResultSet rs = ps.executeQuery()) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                    while (rs.next()) {</span>
+<span class="nc" id="L155">                        Flights flights = new Flights();</span>
+<span class="nc" id="L156">                        flights.setFlightNo(rs.getString(&quot;flight_no&quot;));</span>
+<span class="nc" id="L157">                        flights.setScheduledDeparture(rs.getObject(&quot;scheduled_departure&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L158">                        flights.setScheduledArrival(rs.getObject(&quot;scheduled_arrival&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L159">                        flights.setActualDeparture(rs.getObject(&quot;actual_departure&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L160">                        flights.setActualArrival(rs.getObject(&quot;actual_arrival&quot;, OffsetDateTime.class));</span>
+<span class="nc" id="L161">                        flights.setAircraftModelCode(rs.getString(&quot;aircraft_model&quot;));</span>
+
+<span class="nc" id="L163">                        result.add(flights);</span>
+<span class="nc" id="L164">                    }</span>
+                }
+            }
+<span class="nc" id="L167">        } catch (SQLException e) {</span>
+<span class="nc" id="L168">            throw new IllegalAccessException(&quot;Ошибка работы с базой данных&quot;);</span>
+<span class="nc" id="L169">        }</span>
+
+<span class="nc" id="L171">        return result;</span>
+    }
+
+
+    public static void main(String[] args) throws PropertyVetoException, IllegalAccessException {
+<span class="nc" id="L176">        FlightsDao dao = new FlightsDao();</span>
+
+<span class="nc" id="L178">        List&lt;Flights&gt; flightsByAirportsCode = dao.getFlightsByAirportsCode(Lang.RU, &quot;DME&quot;, &quot;ROV&quot;, 25, 0);</span>
+
+<span class="nc" id="L180">        System.out.println(flightsByAirportsCode.size());</span>
+
+<span class="nc" id="L182">        LocalDateTime now = LocalDateTime.now();</span>
+
+<span class="nc" id="L184">        Flights flights = flightsByAirportsCode.get(1);</span>
+
+<span class="nc" id="L186">        LocalDateTime localDateTime = flights.getScheduledArrival().toLocalDateTime();</span>
+
+
+<span class="nc" id="L189">        System.out.println(localDateTime.toString());</span>
+
+
+
+
+
+
+<span class="nc" id="L196">        System.out.println(now);</span>
+
+
+<span class="nc" id="L199">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
