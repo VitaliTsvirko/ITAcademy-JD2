@@ -1,8 +1,5 @@
 package by.it_academy.jd2.airports.core.dto;
 
-import com.vividsolutions.jts.geom.Point;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -115,6 +112,9 @@ public class AirportsData implements Serializable {
                 '}';
     }
 
+    /**
+     * Данный класс предназначен для хранения координат 
+     */
     private class Coordinates implements Serializable{
         private double x;
         private double y;

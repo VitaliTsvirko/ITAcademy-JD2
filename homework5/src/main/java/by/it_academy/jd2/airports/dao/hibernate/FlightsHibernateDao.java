@@ -2,7 +2,6 @@ package by.it_academy.jd2.airports.dao.hibernate;
 
 import by.it_academy.jd2.airports.core.dto.FlightSearchParam;
 import by.it_academy.jd2.airports.core.dto.Flights;
-import by.it_academy.jd2.airports.core.dto.Lang;
 import by.it_academy.jd2.airports.core.utils.StringUtils;
 import by.it_academy.jd2.airports.dao.api.IFlightsDao;
 import by.it_academy.jd2.airports.dao.hibernate.core.HibernateCreator;
@@ -10,7 +9,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.beans.PropertyVetoException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -47,9 +45,7 @@ public class FlightsHibernateDao implements IFlightsDao {
                 query.setMaxResults(limit);
             }
 
-            List<Flights> result = (List<Flights>) query.list();
-
-            return result;
+            return (List<Flights>) query.list();
         }catch (HibernateException e) {
             throw new IllegalAccessException("Ошибка работы с базой данных");
         }

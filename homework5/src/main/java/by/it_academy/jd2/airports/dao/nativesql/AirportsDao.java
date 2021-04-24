@@ -4,13 +4,9 @@ import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.dao.api.IAirportsDao;
 import by.it_academy.jd2.airports.dao.nativesql.core.ConnectionPoolCreator;
 import by.it_academy.jd2.airports.core.dto.Lang;
-import by.it_academy.jd2.airports.dao.hibernate.core.HibernateCreator;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.postgresql.geometric.PGpoint;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,9 +21,6 @@ import java.util.Map;
  */
 public class AirportsDao implements IAirportsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
-
-    public AirportsDao() throws PropertyVetoException {
-    }
 
     @Override
     public List<AirportsData> getAllAirportsData(Lang lang) throws IllegalAccessException {

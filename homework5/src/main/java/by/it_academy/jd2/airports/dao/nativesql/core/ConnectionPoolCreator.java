@@ -11,23 +11,28 @@ import java.util.ResourceBundle;
  */
 public class ConnectionPoolCreator {
     private static volatile ConnectionPoolCreator instance;
-    private final ComboPooledDataSource cpds;
+    private ComboPooledDataSource cpds;
 
-    private ConnectionPoolCreator() throws PropertyVetoException {
+    private ConnectionPoolCreator() {
+
         ResourceBundle resource = ResourceBundle.getBundle("database");
-
-        cpds = new ComboPooledDataSource();
-        cpds.setDriverClass(resource.getString("db.driver"));
-        cpds.setJdbcUrl(resource.getString("db.url"));
-        cpds.setUser(resource.getString("db.user"));
-        cpds.setPassword(resource.getString("db.password"));
-        cpds.setMinPoolSize(Integer.parseInt(resource.getString("connectionPoolCreator.minPoolSize")));
-        cpds.setAcquireIncrement(Integer.parseInt(resource.getString("connectionPoolCreator.acquireIncrement")));
-        cpds.setMaxPoolSize(Integer.parseInt(resource.getString("connectionPoolCreator.maxPoolSize")));
-        cpds.setMaxStatements(Integer.parseInt(resource.getString("connectionPoolCreator.maxStatements")));
+        try {
+            cpds = new ComboPooledDataSource();
+            cpds.setDriverClass(resource.getString("db.driver"));
+            cpds.setJdbcUrl(resource.getString("db.url"));
+            cpds.setUser(resource.getString("db.user"));
+            cpds.setPassword(resource.getString("db.password"));
+            cpds.setMinPoolSize(Integer.parseInt(resource.getString("connectionPoolCreator.minPoolSize")));
+            cpds.setAcquireIncrement(Integer.parseInt(resource.getString("connectionPoolCreator.acquireIncrement")));
+            cpds.setMaxPoolSize(Integer.parseInt(resource.getString("connectionPoolCreator.maxPoolSize")));
+            cpds.setMaxStatements(Integer.parseInt(resource.getString("connectionPoolCreator.maxStatements")));
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static DataSource getInstance() throws PropertyVetoException {
+
+    public static DataSource getInstance() {
         if (instance == null) {
             synchronized (ConnectionPoolCreator.class){
                 if (instance == null) {

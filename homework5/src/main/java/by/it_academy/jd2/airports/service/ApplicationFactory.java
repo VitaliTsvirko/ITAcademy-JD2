@@ -7,33 +7,18 @@ import by.it_academy.jd2.airports.dao.hibernate.FlightsHibernateDao;
 import by.it_academy.jd2.airports.dao.nativesql.AirportsDao;
 import by.it_academy.jd2.airports.dao.nativesql.FlightsDao;
 
-import java.beans.PropertyVetoException;
-
-
 /**
  * @author Vitali Tsvirko
  */
 public class ApplicationFactory {
     public static IFlightsDao getFlightDao(){
         return new FlightsHibernateDao();
-       /*try {
-            return new FlightsDao();
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-
-        return null;*/
+        //return new FlightsDao();
     }
 
     public static IAirportsDao getAirportsDao(){
         return new AirportsHibernateDao();
-/*        try {
-            return new AirportsDao();
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        return null;*/
-
+        //return new AirportsDao();
     }
 
 }

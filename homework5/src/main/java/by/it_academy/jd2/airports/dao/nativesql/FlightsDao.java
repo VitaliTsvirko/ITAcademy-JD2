@@ -7,7 +7,6 @@ import by.it_academy.jd2.airports.dao.nativesql.core.ConnectionPoolCreator;
 import by.it_academy.jd2.airports.core.dto.Flights;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -21,9 +20,6 @@ import java.util.List;
 public class FlightsDao implements IFlightsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
     private final ZoneOffset offset = ZoneOffset.UTC;
-
-    public FlightsDao() throws PropertyVetoException {
-    }
 
     @Override
     public List<Flights> findFlightsByAirportsOrDates(FlightSearchParam searchParam, int limit, int offset) throws IllegalAccessException {
@@ -42,10 +38,6 @@ public class FlightsDao implements IFlightsDao {
             return this.getFlightsCountByAirportsCodeAndDates(searchParam);
         }
     }
-
-
-
-
 
     private List<Flights> findFlightsByAirportsCodeAndDates(FlightSearchParam searchParam, int limit, int offset) throws IllegalAccessException {
         List<Flights> result = new ArrayList<>();
