@@ -12,94 +12,94 @@ public class Flights implements Serializable {
     /**
      * Номер рейса
      */
-    private String flight_no;
+    private String flightNo;
 
     /**
      * Расписание вылета
      */
-    private OffsetDateTime scheduled_departure;
+    private OffsetDateTime scheduledDeparture;
 
     /**
      * Расписание прилета
      */
-    private OffsetDateTime scheduled_arrival;
+    private OffsetDateTime scheduledArrival;
 
     /**
      * Актуальное время вылета
      */
-    private OffsetDateTime actual_departure;
+    private OffsetDateTime actualDeparture;
 
     /**
      * Актуальное время прилета
      */
-    private OffsetDateTime actual_arrival;
+    private OffsetDateTime actualArrival;
 
     /**
      * Модель самолета
      */
-    private String aircraft_model;
+    private String aircraftModel;
 
     /**
      *
      */
 
-    public String getFlight_no() {
-        return flight_no;
+    public String getFlightNo() {
+        return flightNo;
     }
 
-    public void setFlight_no(String flight_no) {
-        this.flight_no = flight_no;
+    public void setFlightNo(String flightNo) {
+        this.flightNo = flightNo;
     }
 
-    public OffsetDateTime getScheduled_departure() {
-        return scheduled_departure;
+    public OffsetDateTime getScheduledDeparture() {
+        return scheduledDeparture;
     }
 
-    public void setScheduled_departure(OffsetDateTime scheduled_departure) {
-        this.scheduled_departure = scheduled_departure;
+    public void setScheduledDeparture(OffsetDateTime scheduledDeparture) {
+        this.scheduledDeparture = scheduledDeparture;
     }
 
-    public OffsetDateTime getScheduled_arrival() {
-        return scheduled_arrival;
+    public OffsetDateTime getScheduledArrival() {
+        return scheduledArrival;
     }
 
-    public void setScheduled_arrival(OffsetDateTime scheduled_arrival) {
-        this.scheduled_arrival = scheduled_arrival;
+    public void setScheduledArrival(OffsetDateTime scheduledArrival) {
+        this.scheduledArrival = scheduledArrival;
     }
 
-    public OffsetDateTime getActual_departure() {
-        return actual_departure;
+    public OffsetDateTime getActualDeparture() {
+        return actualDeparture;
     }
 
-    public void setActual_departure(OffsetDateTime actual_departure) {
-        this.actual_departure = actual_departure;
+    public void setActualDeparture(OffsetDateTime actualDeparture) {
+        this.actualDeparture = actualDeparture;
     }
 
-    public OffsetDateTime getActual_arrival() {
-        return actual_arrival;
+    public OffsetDateTime getActualArrival() {
+        return actualArrival;
     }
 
-    public void setActual_arrival(OffsetDateTime actual_arrival) {
-        this.actual_arrival = actual_arrival;
+    public void setActualArrival(OffsetDateTime actualArrival) {
+        this.actualArrival = actualArrival;
     }
 
-    public String getAircraft_model() {
-        return aircraft_model;
+    public String getAircraftModel() {
+        return aircraftModel;
     }
 
-    public void setAircraft_model(String aircraft_model) {
-        this.aircraft_model = aircraft_model;
+    public void setAircraftModel(String aircraftModel) {
+        this.aircraftModel = aircraftModel;
     }
 
     @Override
     public String toString() {
         return "Flights{" +
-                "flight_no='" + flight_no + '\'' +
-                ", scheduled_departure=" + scheduled_departure +
-                ", scheduled_arrival=" + scheduled_arrival +
-                ", actual_departure=" + actual_departure +
-                ", actual_arrival=" + actual_arrival +
-                ", aircraft_model='" + aircraft_model + '\'' +
+                "flight_no='" + flightNo + '\'' +
+                ", scheduled_departure=" + scheduledDeparture +
+                ", scheduled_arrival=" + scheduledArrival +
+                ", actual_departure=" + actualDeparture +
+                ", actual_arrival=" + actualArrival +
+                ", aircraft_model='" + aircraftModel + '\'' +
                 '}';
     }
 }

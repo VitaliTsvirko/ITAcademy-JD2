@@ -101,12 +101,12 @@ public class FlightsDao implements IFlightsDao {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Flights flights = new Flights();
-                        flights.setFlight_no(rs.getString("flight_no"));
-                        flights.setScheduled_departure(rs.getObject("scheduled_departure", OffsetDateTime.class));
-                        flights.setScheduled_arrival(rs.getObject("scheduled_arrival", OffsetDateTime.class));
-                        flights.setActual_departure(rs.getObject("actual_departure", OffsetDateTime.class));
-                        flights.setActual_arrival(rs.getObject("actual_arrival", OffsetDateTime.class));
-                        flights.setAircraft_model(rs.getString("aircraft_model"));
+                        flights.setFlightNo(rs.getString("flight_no"));
+                        flights.setScheduledDeparture(rs.getObject("scheduled_departure", OffsetDateTime.class));
+                        flights.setScheduledArrival(rs.getObject("scheduled_arrival", OffsetDateTime.class));
+                        flights.setActualDeparture(rs.getObject("actual_departure", OffsetDateTime.class));
+                        flights.setActualArrival(rs.getObject("actual_arrival", OffsetDateTime.class));
+                        flights.setAircraftModel(rs.getString("aircraft_model"));
 
                         result.add(flights);
                     }
@@ -146,12 +146,12 @@ public class FlightsDao implements IFlightsDao {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         Flights flights = new Flights();
-                        flights.setFlight_no(rs.getString("flight_no"));
-                        flights.setScheduled_departure(rs.getObject("scheduled_departure", OffsetDateTime.class));
-                        flights.setScheduled_arrival(rs.getObject("scheduled_arrival", OffsetDateTime.class));
-                        flights.setActual_departure(rs.getObject("actual_departure", OffsetDateTime.class));
-                        flights.setActual_arrival(rs.getObject("actual_arrival", OffsetDateTime.class));
-                        flights.setAircraft_model(rs.getString("aircraft_model"));
+                        flights.setFlightNo(rs.getString("flight_no"));
+                        flights.setScheduledDeparture(rs.getObject("scheduled_departure", OffsetDateTime.class));
+                        flights.setScheduledArrival(rs.getObject("scheduled_arrival", OffsetDateTime.class));
+                        flights.setActualDeparture(rs.getObject("actual_departure", OffsetDateTime.class));
+                        flights.setActualArrival(rs.getObject("actual_arrival", OffsetDateTime.class));
+                        flights.setAircraftModel(rs.getString("aircraft_model"));
 
                         result.add(flights);
                     }

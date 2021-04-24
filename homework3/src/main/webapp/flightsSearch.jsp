@@ -73,20 +73,20 @@
                     <c:forEach items="${requestScope.flightsData}"
                                var="data">
                         <tr>
-                            <td>${data.flight_no}</td>
-                            <fmt:parseDate value="${data.scheduled_departure}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_departure_parsed" type="both" />
+                            <td>${data.flightNo}</td>
+                            <fmt:parseDate value="${data.scheduledDeparture}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_departure_parsed" type="both" />
                             <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${scheduled_departure_parsed}" /></td>
 
-                            <fmt:parseDate value="${data.scheduled_arrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_arrival_parsed" type="both" />
+                            <fmt:parseDate value="${data.scheduledArrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="scheduled_arrival_parsed" type="both" />
                             <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${scheduled_arrival_parsed}" /></td>
 
-                            <fmt:parseDate value="${data.actual_departure}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_departure_parsed" type="both" />
+                            <fmt:parseDate value="${data.actualDeparture}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_departure_parsed" type="both" />
                             <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${actual_departure_parsed}" /></td>
 
-                            <fmt:parseDate value="${data.actual_arrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_arrival_parsed" type="both" />
+                            <fmt:parseDate value="${data.actualArrival}" pattern="yyyy-MM-dd'T'HH:mm'Z'" var="actual_arrival_parsed" type="both" />
                             <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${actual_arrival_parsed}" /></td>
 
-                            <td>${data.aircraft_model}</td>
+                            <td>${data.aircraftModel}</td>
                         </tr>
                     </c:forEach>
                     </tbody>
