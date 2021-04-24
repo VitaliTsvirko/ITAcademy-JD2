@@ -6,7 +6,6 @@ import by.it_academy.jd2.airports.dao.api.IFlightsDao;
 import by.it_academy.jd2.airports.core.dto.*;
 import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 
-import java.beans.PropertyVetoException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,14 +21,10 @@ import java.util.List;
  */
 public class FlightsSearcherService implements IFlightsSearcherService {
     private static volatile FlightsSearcherService instance;
-    private final IFlightsDao flightsDao;
+    private IFlightsDao flightsDao;
 
-    private FlightsSearcherService() throws IllegalAccessException {
-        try {
-            flightsDao = new FlightsDao();
-        } catch (PropertyVetoException e){
-            throw new IllegalAccessException("Ошибка сервиса");
-        }
+    private FlightsSearcherService() {
+        flightsDao = new FlightsDao();
     }
 
     /**
@@ -38,7 +33,7 @@ public class FlightsSearcherService implements IFlightsSearcherService {
      * <p>Если объект был создан ранее, то он и возвращается</p>
      * @return возвращает объект {@code FlightsSearcherService}
      */
-    public static FlightsSearcherService getInstance() throws IllegalAccessException {
+    public static FlightsSearcherService getInstance() {
         if (instance == null) {
             synchronized (FlightsSearcherService.class){
                 if (instance == null) {
@@ -139,8 +134,12 @@ public class FlightsSearcherService implements IFlightsSearcherService {
         int result = 1;
 
         if (requestPageNo != null) {
-            int tmp = Integer.parseInt(requestPageNo);
-            result = (tmp <= 0) ? 1 : tmp;
+            try{
+                int tmp = Integer.parseInt(requestPageNo);
+                result = (tmp <= 0) ? 1 : tmp;
+            } catch (NumberFormatException e){
+                result = 1;
+            }
         }
 
         return Math.min(result, totalPages);

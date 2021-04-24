@@ -3,7 +3,6 @@ package by.it_academy.jd2.airports.dao.api;
 import by.it_academy.jd2.airports.core.dto.Flights;
 import by.it_academy.jd2.airports.core.dto.Lang;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 

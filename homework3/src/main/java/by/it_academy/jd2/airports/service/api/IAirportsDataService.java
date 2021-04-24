@@ -3,8 +3,6 @@ package by.it_academy.jd2.airports.service.api;
 import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.core.dto.Lang;
 
-import java.beans.PropertyVetoException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 

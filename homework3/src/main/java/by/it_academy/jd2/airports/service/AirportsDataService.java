@@ -6,7 +6,6 @@ import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.core.dto.Lang;
 import by.it_academy.jd2.airports.service.api.IAirportsDataService;
 
-import java.beans.PropertyVetoException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,14 +18,10 @@ import java.util.Map;
  */
 public class AirportsDataService implements IAirportsDataService {
     private static volatile AirportsDataService instance;
-    private final IAirportsDao airportDao;
+    private IAirportsDao airportDao;
 
-    private AirportsDataService() throws IllegalAccessException {
-        try {
-            airportDao = new AirportsDao();
-        } catch (PropertyVetoException e){
-            throw new IllegalAccessException("Ошибка сервиса");
-        }
+    private AirportsDataService() {
+        airportDao = new AirportsDao();
     }
 
     /**

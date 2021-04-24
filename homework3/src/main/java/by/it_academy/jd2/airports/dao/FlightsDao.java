@@ -6,10 +6,8 @@ import by.it_academy.jd2.airports.core.dto.Flights;
 import by.it_academy.jd2.airports.core.dto.Lang;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +17,6 @@ import java.util.List;
  */
 public class FlightsDao implements IFlightsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
-
-    public FlightsDao() throws PropertyVetoException {
-    }
 
     @Override
     public int getFlightsCountByAirportsCode(String departureAirportCode, String arrivalAirportCode) throws IllegalAccessException {
@@ -168,21 +163,5 @@ public class FlightsDao implements IFlightsDao {
 
         return result;
     }
-
-
-    public static void main(String[] args) throws PropertyVetoException, IllegalAccessException {
-        FlightsDao dao = new FlightsDao();
-
-        List<Flights> flightsByAirportsCode = dao.getFlightsByAirportsCode(Lang.RU, "DME", "ROV", 25, 0);
-
-        System.out.println(flightsByAirportsCode.size());
-
-        LocalDateTime now = LocalDateTime.now();
-
-        System.out.println(now);
-
-
-    }
-
 
 }

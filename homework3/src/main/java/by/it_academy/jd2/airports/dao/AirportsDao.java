@@ -8,7 +8,6 @@ import org.postgresql.geometric.PGpoint;
 
 import javax.sql.DataSource;
 import java.awt.geom.Point2D;
-import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,9 +22,6 @@ import java.util.Map;
  */
 public class AirportsDao implements IAirportsDao {
     private final DataSource dataSource = ConnectionPoolCreator.getInstance();
-
-    public AirportsDao() throws PropertyVetoException {
-    }
 
     @Override
     public List<AirportsData> getAllAirportsData(Lang lang) throws IllegalAccessException {
