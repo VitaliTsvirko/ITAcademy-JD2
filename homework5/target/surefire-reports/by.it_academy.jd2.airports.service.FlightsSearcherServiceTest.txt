@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: by.it_academy.jd2.airports.service.FlightsSearcherServiceTest
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.07 s - in by.it_academy.jd2.airports.service.FlightsSearcherServiceTest
