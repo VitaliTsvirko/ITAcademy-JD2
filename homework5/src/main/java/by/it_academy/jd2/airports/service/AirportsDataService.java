@@ -4,7 +4,6 @@ import by.it_academy.jd2.airports.dao.nativesql.AirportsDao;
 import by.it_academy.jd2.airports.dao.api.IAirportsDao;
 import by.it_academy.jd2.airports.core.dto.AirportsData;
 import by.it_academy.jd2.airports.core.dto.Lang;
-import by.it_academy.jd2.airports.dao.hibernate.AirportsHibernateDao;
 import by.it_academy.jd2.airports.service.api.IAirportsDataService;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Map;
  */
 public class AirportsDataService implements IAirportsDataService {
     private static volatile AirportsDataService instance;
-    private final IAirportsDao airportDao = ApplicationFactory.getAirportsDao();
+    private IAirportsDao airportDao = ApplicationFactory.getAirportsDao();
 
     /**
      * Данный метод метод предназначен для создания и возвращения объекта

@@ -16,7 +16,7 @@ import java.beans.PropertyVetoException;
 public class ApplicationFactory {
     public static IFlightsDao getFlightDao(){
         return new FlightsHibernateDao();
-/*        try {
+       /*try {
             return new FlightsDao();
         } catch (PropertyVetoException e) {
             e.printStackTrace();
@@ -27,13 +27,13 @@ public class ApplicationFactory {
 
     public static IAirportsDao getAirportsDao(){
         return new AirportsHibernateDao();
-       /* try {
+/*        try {
             return new AirportsDao();
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-
         return null;*/
+
     }
 
 }

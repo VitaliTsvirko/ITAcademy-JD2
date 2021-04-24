@@ -84,7 +84,7 @@ public class FlightsDao implements IFlightsDao {
                         flights.setScheduledArrival(rs.getObject("scheduled_arrival", OffsetDateTime.class));
                         flights.setActualDeparture(rs.getObject("actual_departure", OffsetDateTime.class));
                         flights.setActualArrival(rs.getObject("actual_arrival", OffsetDateTime.class));
-                        flights.setAircraftModelCode(rs.getString("aircraft_model"));
+                        flights.setAircraftModel(rs.getString("aircraft_model"));
 
                         result.add(flights);
                     }
@@ -129,7 +129,7 @@ public class FlightsDao implements IFlightsDao {
                         flights.setScheduledArrival(rs.getObject("scheduled_arrival", OffsetDateTime.class));
                         flights.setActualDeparture(rs.getObject("actual_departure", OffsetDateTime.class));
                         flights.setActualArrival(rs.getObject("actual_arrival", OffsetDateTime.class));
-                        flights.setAircraftModelCode(rs.getString("aircraft_model"));
+                        flights.setAircraftModel(rs.getString("aircraft_model"));
 
                         result.add(flights);
                     }
@@ -190,14 +190,5 @@ public class FlightsDao implements IFlightsDao {
 
         return result;
     }
-
-
-
-    public static void main(String[] args) throws PropertyVetoException, IllegalAccessException {
-        FlightsDao dao = new FlightsDao();
-
-
-    }
-
 
 }

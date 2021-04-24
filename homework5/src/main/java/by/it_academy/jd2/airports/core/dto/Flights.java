@@ -1,5 +1,7 @@
 package by.it_academy.jd2.airports.core.dto;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -56,13 +58,12 @@ public class Flights implements Serializable {
     /**
      * Модель самолета
      */
-    @Column(name = "aircraft_code", length=3, columnDefinition="bpchar")
-    private String aircraftModelCode;
+    @Formula("(Select ad.model FROM flights f, aircrafts ad WHERE f.aircraft_code = ad.aircraft_code AND f.flight_id = flight_id)")
+    private String aircraftModel;
 
     /**
      *
      */
-
 
     public String getFlightNo() {
         return flightNo;
@@ -120,12 +121,12 @@ public class Flights implements Serializable {
         this.actualArrival = actualArrival;
     }
 
-    public String getAircraftModelCode() {
-        return aircraftModelCode;
+    public String getAircraftModel() {
+        return aircraftModel;
     }
 
-    public void setAircraftModelCode(String aircraftModelCode) {
-        this.aircraftModelCode = aircraftModelCode;
+    public void setAircraftModel(String aircraftModelCode) {
+        this.aircraftModel = aircraftModelCode;
     }
 
     @Override
@@ -139,7 +140,7 @@ public class Flights implements Serializable {
                 ", scheduledArrival=" + scheduledArrival +
                 ", actualDeparture=" + actualDeparture +
                 ", actualArrival=" + actualArrival +
-                ", aircraftModelCode='" + aircraftModelCode + '\'' +
+                ", aircraftModelCode='" + aircraftModel + '\'' +
                 '}';
     }
 }

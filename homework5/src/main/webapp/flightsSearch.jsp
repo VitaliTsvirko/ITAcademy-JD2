@@ -79,7 +79,7 @@
                             <td>${data.scheduledArrival.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</td>
                             <td>${data.actualDeparture.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</td>
                             <td>${data.actualArrival.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))}</td>
-                            <td>${data.aircraftModelCode}</td>
+                            <td>${data.aircraftModel}</td>
                         </tr>
                     </c:forEach>
                     </tbody>

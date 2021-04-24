@@ -3,10 +3,8 @@ package by.it_academy.jd2.airports.service;
 import by.it_academy.jd2.airports.core.utils.StringUtils;
 import by.it_academy.jd2.airports.dao.api.IFlightsDao;
 import by.it_academy.jd2.airports.core.dto.*;
-import by.it_academy.jd2.airports.dao.hibernate.FlightsHibernateDao;
 import by.it_academy.jd2.airports.service.api.IFlightsSearcherService;
 
-import java.beans.PropertyVetoException;
 import java.util.List;
 
 /**
@@ -21,7 +19,7 @@ import java.util.List;
  */
 public class FlightsSearcherService implements IFlightsSearcherService {
     private static volatile FlightsSearcherService instance;
-    private final IFlightsDao flightsDao = ApplicationFactory.getFlightDao();
+    private IFlightsDao flightsDao = ApplicationFactory.getFlightDao();
 
     /**
      * Данный метод метод предназначен для создания и возвращения объекта
@@ -59,6 +57,9 @@ public class FlightsSearcherService implements IFlightsSearcherService {
             pageParam.setFlightsTotalCount(flightsTotalCount);
 
             if (flightsTotalCount > 0) {
+                if (pageParam.getPageItemLimit() == null || pageParam.getPageItemLimit() <= 0){
+                    pageParam.setPageItemLimit(25);
+                }
                 int totalPages = (int) Math.ceil(flightsTotalCount * 1.0 / pageParam.getPageItemLimit());
                 int pageNo = validatePageNo(searchParam.getQueryPageNo(), totalPages);
                 int offset = requestOffsetCalc(flightsTotalCount, pageParam.getPageItemLimit(), pageNo);
@@ -92,7 +93,6 @@ public class FlightsSearcherService implements IFlightsSearcherService {
             return 0;
         }
     }
-
 
     /**
      * Данный метод выполняет проверку параметров поиска.

@@ -19,14 +19,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AirportsDataServiceTest {
-    private final IAirportsDataService airportsDataService = AirportsDataService.getInstance();
     private final IAirportsDao mockAirportDao = mock(AirportsDao.class);
+    private final IAirportsDataService airportsDataService = AirportsDataService.getInstance();
 
     AirportsDataServiceTest() throws IllegalAccessException {
-    }
-
-    @BeforeEach
-    public void airportSetUp(){
         try{
             Field airportDao = AirportsDataService.class.getDeclaredField("airportDao");
             airportDao.setAccessible(true);
@@ -35,7 +31,6 @@ class AirportsDataServiceTest {
             e.printStackTrace();
         }
     }
-
 
     @Test
     void getAllAirportsCodeAndName() throws IllegalAccessException {

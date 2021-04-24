@@ -85,26 +85,4 @@ public class FlightsHibernateDao implements IFlightsDao {
         }
     }
 
-
-
-
-    public static void main(String[] args) throws PropertyVetoException, IllegalAccessException {
-
-
-        //List<Flights> flightsByAirportsCode = dao.getFlightsByAirportsCode(Lang.RU, "DME", "ROV", 25, 50);
-
-        FlightsHibernateDao dao = new FlightsHibernateDao();
-
-        FlightSearchParam searchParam = new FlightSearchParam();
-        searchParam.setLang(Lang.RU);
-        searchParam.setDepartureAirport("ROV");
-        searchParam.setArrivalAirport("DME");
-
-        List<Flights> flightsByAirportsOrDates = dao.findFlightsByAirportsOrDates(searchParam, 25, 50);
-
-
-        int flightsCountByAirportsCodeOrDates = dao.getFlightsCountByAirportsCodeOrDates(searchParam);
-    }
-
-
 }

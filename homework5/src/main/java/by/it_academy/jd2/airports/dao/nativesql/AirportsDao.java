@@ -91,34 +91,4 @@ public class AirportsDao implements IAirportsDao {
         return result;
     }
 
-
-    public static void main(String[] args) {
-  /*      Session session = HibernateCreator.getInstance().openSession();
-
-        AirportsData data = new AirportsData();
-
-        //Query query = session.createQuery("FROM category WHERE name LIKE :param1");
-
-        Query query = session.createQuery("FROM AirportsData");
-
-
-        List<AirportsData> resultList = (List<AirportsData>) query.list();
-
-        //List<AirportsData> category = query.list();
-
-
-        AirportsData yks = session.load(AirportsData.class, "YKS");
-
-        System.out.println(yks);*/
-
-        AirportsData adata = new AirportsData();
-
-        adata.setCoordinatesPoints(1,1);
-
-
-        Double coordinateY = adata.getCoordinateY();
-
-
-    }
-
 }

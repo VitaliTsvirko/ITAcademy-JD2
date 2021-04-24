@@ -46,19 +46,7 @@ public class AirportsHibernateDao implements IAirportsDao {
             result.put((String) o[0], (String) o[1]);
         }
 
-
         return result;
     }
 
-
-    public static void main(String[] args) throws IllegalAccessException {
-        AirportsHibernateDao dao = new AirportsHibernateDao();
-
-        List<AirportsData> allAirportsData = dao.getAllAirportsData(Lang.RU);
-        Map<String, String> allAirportsCodeAndName = dao.getAllAirportsCodeAndName(Lang.RU);
-
-        System.out.println(allAirportsCodeAndName.size());
-
-
-    }
 }
